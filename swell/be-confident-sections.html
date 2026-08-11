@@ -109,8 +109,8 @@
   }
   
 .bc .sec-title .en{
-    display:block;font-family:var(--font-mono);font-weight:500;font-size:.28em;
-    letter-spacing:.28em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:1em;letter-spacing:.3em;
+    display:block;font-family:var(--font-mono)!important;font-weight:500;font-size:.74rem!important;
+    text-transform:uppercase;color:var(--rose-deep)!important;margin-bottom:1em;letter-spacing:.24em;
   }
   
 .bc .sec-rule{height:1px;margin-top:1.5rem;background:linear-gradient(90deg,var(--rose),var(--line) 40%,transparent)}
@@ -267,7 +267,7 @@
 .bc .course{grid-template-columns:auto 1fr;gap:10px 16px;align-items:start}
 .bc .course .num{padding-top:.1em}
 .bc .course .body h3{font-size:1.15rem!important;line-height:1.55}
-.bc .course .meta{grid-column:1 / -1;text-align:left}}
+.bc .course .meta{grid-column:1 / -1;text-align:right}}
 
   /* ============================================================ Statement band */
   
@@ -410,6 +410,12 @@
 
 .bc .crow .v{word-break:break-word;overflow-wrap:anywhere}
 .bc .crow .v a{word-break:break-all}
+
+/* ============================================================
+   追加調整2：メインビジュアルとの隙間を詰める / 英語ラベル可読サイズ
+   ============================================================ */
+.bc{margin-top:clamp(-72px,-9vw,-32px)!important}
+.bc .intro{padding-top:clamp(8px,2vw,18px)!important}
 </style>
 <div id="top" class="bc">
 <!-- ============ INTRO（さおり塾） ============ -->
