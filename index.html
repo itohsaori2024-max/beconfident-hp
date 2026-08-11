@@ -278,6 +278,22 @@
   .cta-band{background:transparent}
   .cta-band > .cta-inner{background:linear-gradient(180deg,#F7E3E9,#F4ECDF);border:1px solid rgba(50,44,40,.07);border-radius:24px;box-shadow:0 28px 60px -36px rgba(50,44,40,.5)}
 
+  /* ===== 講座を白カード化 ===== */
+  .program-list{gap:clamp(14px,2vw,20px)}
+  .course{background:var(--card);border:1px solid var(--line-soft);border-radius:16px;padding:clamp(22px,3vw,32px) clamp(22px,3vw,36px);box-shadow:0 16px 40px -30px rgba(50,44,40,.5);border-top:none;transition:transform .28s ease,box-shadow .28s ease}
+  .program-list .course:last-child{border-bottom:none}
+  .course:hover{padding-left:clamp(22px,3vw,36px);transform:translateY(-4px);box-shadow:0 26px 50px -30px rgba(190,110,134,.4)}
+
+  /* ===== SOLUTION（解決の橋渡し・ローズのbox） ===== */
+  .solution > .wrap{background:linear-gradient(180deg,#F7E3E9,#F5ECE0);border:1px solid rgba(50,44,40,.07);border-radius:24px;box-shadow:0 28px 60px -36px rgba(50,44,40,.5)}
+  .solution-inner{text-align:center;max-width:34ch;margin-inline:auto;display:flex;flex-direction:column;align-items:center}
+  .solution .eyebrow{margin-bottom:1.4rem}
+  .solution h2{font-family:var(--font-mincho);font-weight:700;font-size:clamp(1.7rem,4.8vw,2.8rem);line-height:1.5;letter-spacing:.04em;color:var(--ink)}
+  .solution h2 .hl{color:var(--rose-deep);background:linear-gradient(transparent 62%,rgba(217,139,160,.28) 62%)}
+  .solution p{color:var(--ink-soft);margin:1.4rem 0 0;font-size:1rem}
+  .solution .btn{margin-top:2rem}
+  .solution .btn:hover .arw{transform:translateY(3px)}
+
   /* ===== 会社概要URLのはみ出し対策（スマホ） ===== */
   .crow .v{word-break:break-word;overflow-wrap:anywhere}
   .crow .v a{word-break:break-all}
@@ -409,6 +425,14 @@
           </div>
           <div class="meta">月2回 / 継続制<br><span>マンツーマン</span></div>
         </div>
+        <div class="course reveal">
+          <div class="num">04</div>
+          <div class="body">
+            <h3>その他｜営業スキルアップ動画・音声多数</h3>
+            <p>いつでもどこでも学べる動画・音声コンテンツを多数ご用意。スキマ時間の復習や、講座の予習・補強に活用できます。</p>
+          </div>
+          <div class="meta">会員制 / オンライン<br><span>見放題・聴き放題</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -420,6 +444,18 @@
         <span class="q">&ldquo;</span>
         <h2>「売れない」は、才能ではなく<br><span class="u">スキル不足</span>です。</h2>
         <p>正しい訓練を積めば、成果は誰でも再現できる。私たちはそう確信しています。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOLUTION（解決の橋渡し） ============ -->
+  <section class="section solution">
+    <div class="wrap">
+      <div class="solution-inner reveal">
+        <span class="eyebrow">Solution</span>
+        <h2>その<span class="hl">スキル不足</span>、<br>私たちが解消します。</h2>
+        <p>一人ひとりの営業に本気で向き合い、「売れる」を再現できるまで伴走する。<br>まずは、代表の想いをお聞きください。</p>
+        <a href="#profile" class="btn">代表の想いを見る <span class="arw">↓</span></a>
       </div>
     </div>
   </section>

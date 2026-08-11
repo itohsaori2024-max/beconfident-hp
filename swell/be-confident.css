@@ -410,3 +410,20 @@
    ============================================================ */
 .bc{margin-top:clamp(-96px,-14vw,-48px)!important}
 .bc .intro{padding-top:clamp(4px,1.2vw,12px)!important}
+
+/* ============================================================
+   追加調整3：講座を白カード化 / SOLUTIONセクション
+   ============================================================ */
+.bc .program-list{gap:clamp(14px,2vw,20px)}
+.bc .course{background:var(--card)!important;border:1px solid var(--line-soft)!important;border-radius:16px!important;padding:clamp(22px,3vw,32px) clamp(22px,3vw,36px)!important;box-shadow:0 16px 40px -30px rgba(50,44,40,.5);border-top:none!important;transition:transform .28s ease,box-shadow .28s ease}
+.bc .program-list .course:last-child{border-bottom:none!important}
+.bc .course:hover{transform:translateY(-4px);box-shadow:0 26px 50px -30px rgba(190,110,134,.4)}
+
+.bc .solution > .wrap{background:linear-gradient(180deg,#F7E3E9,#F5ECE0)!important;border:1px solid rgba(50,44,40,.07);border-radius:24px;box-shadow:0 28px 60px -36px rgba(50,44,40,.5)}
+.bc .solution-inner{text-align:center;max-width:34ch;margin-inline:auto;display:flex;flex-direction:column;align-items:center}
+.bc .solution .eyebrow{margin-bottom:1.4rem}
+.bc .solution h2{font-family:var(--font-mincho)!important;font-weight:700;font-size:clamp(1.7rem,4.8vw,2.8rem)!important;line-height:1.5;letter-spacing:.04em;color:var(--ink)!important}
+.bc .solution h2 .hl{color:var(--rose-deep)!important;background:linear-gradient(transparent 62%,rgba(217,139,160,.28) 62%)}
+.bc .solution p{color:var(--ink-soft)!important;margin:1.4rem 0 0;font-size:1rem}
+.bc .solution .btn{margin-top:2rem}
+.bc .solution .btn:hover .arw{transform:translateY(3px)}
