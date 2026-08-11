@@ -408,5 +408,5 @@
 /* ============================================================
    追加調整2：メインビジュアルとの隙間を詰める / 英語ラベル可読サイズ
    ============================================================ */
-.bc{margin-top:clamp(-72px,-9vw,-32px)!important}
-.bc .intro{padding-top:clamp(8px,2vw,18px)!important}
+.bc{margin-top:clamp(-96px,-14vw,-48px)!important}
+.bc .intro{padding-top:clamp(4px,1.2vw,12px)!important}
