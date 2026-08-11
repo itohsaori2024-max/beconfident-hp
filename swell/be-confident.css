@@ -254,11 +254,13 @@
   
 .bc .course .body p{margin:0;color:var(--ink-soft);font-size:.94rem;max-width:56ch}
   
-.bc .course .meta{text-align:right;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;color:var(--ink);line-height:1.9;white-space:nowrap}
-  
+.bc .course .meta{text-align:right;font-family:var(--font-jp)!important;font-weight:500;font-size:.8rem;letter-spacing:.04em;color:var(--ink);line-height:1.9;white-space:nowrap}
+
 .bc .course .meta span{color:var(--faint)}
   @media (max-width:720px){
-.bc .course{grid-template-columns:auto 1fr;gap:14px 18px}
+.bc .course{grid-template-columns:auto 1fr;gap:10px 16px;align-items:start}
+.bc .course .num{padding-top:.1em}
+.bc .course .body h3{font-size:1.15rem!important;line-height:1.55}
 .bc .course .meta{grid-column:1 / -1;text-align:left}}
 
   /* ============================================================ Statement band */
