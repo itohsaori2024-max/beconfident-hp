@@ -39,6 +39,23 @@
     --pad:clamp(20px,5vw,64px);
   }
 
+/* ============================================================
+   SWELLの見出し等の標準装飾を .bc 内だけ無効化（デザイン衝突の解消）
+   ============================================================ */
+.bc h1,.bc h2,.bc h3,.bc h4{
+  background:transparent!important;border:none!important;box-shadow:none!important;
+  padding:0!important;margin:0!important;line-height:1.4;font-weight:600;
+}
+.bc h2::before,.bc h2::after,.bc h3::before,.bc h3::after,.bc h4::before,.bc h4::after{
+  content:none!important;display:none!important;background:none!important;border:none!important;
+}
+.bc *{writing-mode:horizontal-tb!important;}
+.bc a{text-decoration:none!important;}
+.bc .statement h2,.bc .cta-inner h2,.bc .sec-title,.bc .strength h3,.bc .course .body h3,.bc .profile-body h3{
+  font-family:var(--font-mincho)!important;
+}
+
+
   
 .bc, .bc *{box-sizing:border-box}
   
