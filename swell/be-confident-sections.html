@@ -386,9 +386,42 @@
 .bc .btn, .bc .strength, .bc .course{transition:none}}
 
   /* demo banner */
+
+/* ============================================================
+   追加調整：INTRO(さおり塾) / セクションbox化 / URL折返し
+   ============================================================ */
+.bc .intro{padding-block:clamp(44px,7vw,88px) clamp(20px,3vw,36px)}
+.bc .intro-inner{text-align:center}
+.bc .intro-sub{font-family:var(--font-mono)!important;letter-spacing:.34em;text-transform:uppercase;color:var(--rose-deep)!important;font-size:.82rem;display:block;margin-bottom:1.1rem}
+.bc .intro-title{font-family:var(--font-mincho)!important;font-weight:700;font-size:clamp(3rem,11vw,6.5rem)!important;letter-spacing:.14em;line-height:1.1;color:var(--ink)!important;-webkit-text-stroke:.7px var(--ink)}
+.bc .intro-mark{width:56px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--rose),var(--rose-deep));margin:1.6rem auto 0}
+
+.bc .section{padding-block:clamp(14px,2.2vw,26px)!important}
+.bc .section + .section{border-top:none!important}
+.bc .section > .wrap{background:#F3EBDF;border:1px solid rgba(50,44,40,.07);border-radius:24px;padding-block:clamp(40px,6vw,72px);box-shadow:0 28px 60px -36px rgba(50,44,40,.5)}
+.bc .intro > .wrap{background:transparent;border:none;box-shadow:none;padding-block:0}
+.bc .band::before,.bc .cta-band::before{content:none!important}
+.bc .band{background:transparent!important}
+.bc .band > .wrap{background:linear-gradient(180deg,var(--navy),#0F2338);border:1px solid rgba(255,255,255,.10)}
+.bc .cta-band{background:transparent!important}
+.bc .cta-band > .cta-inner{background:linear-gradient(180deg,#F7E3E9,#F4ECDF);border:1px solid rgba(50,44,40,.07);border-radius:24px;box-shadow:0 28px 60px -36px rgba(50,44,40,.5)}
+
+.bc .crow .v{word-break:break-word;overflow-wrap:anywhere}
+.bc .crow .v a{word-break:break-all}
 </style>
 <div id="top" class="bc">
-<!-- ============ STRENGTH ============ -->
+<!-- ============ INTRO（さおり塾） ============ -->
+  <section class="section intro">
+    <div class="wrap">
+      <div class="intro-inner">
+        <span class="intro-sub">営業スキルアップ塾</span>
+        <h2 class="intro-title">さおり塾</h2>
+        <div class="intro-mark"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STRENGTH ============ -->
   <section class="section" id="strength">
     <div class="wrap">
       <div class="sec-head">

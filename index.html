@@ -260,6 +260,28 @@
   .reveal.in{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.btn,.strength,.course{transition:none}}
 
+  /* ===== INTRO（ヒーローと本文の間・さおり塾） ===== */
+  .intro{padding-block:clamp(44px,7vw,88px) clamp(20px,3vw,36px)}
+  .intro-inner{text-align:center}
+  .intro-sub{font-family:var(--font-mono);letter-spacing:.34em;text-transform:uppercase;color:var(--rose-deep);font-size:.82rem;display:block;margin-bottom:1.1rem}
+  .intro-title{font-family:var(--font-mincho);font-weight:700;font-size:clamp(3rem,11vw,6.5rem);letter-spacing:.14em;line-height:1.1;color:var(--ink);-webkit-text-stroke:.7px var(--ink)}
+  .intro-mark{width:56px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--rose),var(--rose-deep));margin:1.6rem auto 0}
+
+  /* ===== セクションを背景boxで囲う（境目は白地・立体感UP） ===== */
+  .section{padding-block:clamp(14px,2.2vw,26px)}
+  .section + .section{border-top:none}
+  .section > .wrap{background:#F3EBDF;border:1px solid rgba(50,44,40,.07);border-radius:24px;padding-block:clamp(40px,6vw,72px);box-shadow:0 28px 60px -36px rgba(50,44,40,.5)}
+  .intro > .wrap{background:transparent;border:none;box-shadow:none;padding-block:0}
+  .band::before,.cta-band::before{content:none}
+  .band{background:transparent}
+  .band > .wrap{background:linear-gradient(180deg,var(--navy),#0F2338);border:1px solid rgba(255,255,255,.10)}
+  .cta-band{background:transparent}
+  .cta-band > .cta-inner{background:linear-gradient(180deg,#F7E3E9,#F4ECDF);border:1px solid rgba(50,44,40,.07);border-radius:24px;box-shadow:0 28px 60px -36px rgba(50,44,40,.5)}
+
+  /* ===== 会社概要URLのはみ出し対策（スマホ） ===== */
+  .crow .v{word-break:break-word;overflow-wrap:anywhere}
+  .crow .v a{word-break:break-all}
+
   /* demo banner */
   .draft{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;color:var(--ink-soft);text-align:center;padding:10px;border-bottom:1px solid var(--line-soft);background:var(--paper-2)}
   .draft b{color:var(--rose-deep)}
@@ -310,6 +332,17 @@
           <small>お手本のような「白背景で切り抜いた笑顔の写真」を入れると◎</small>
         </div>
         <span class="badge">代表 / 主任講師 <b>Saorin</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INTRO（さおり塾） ============ -->
+  <section class="section intro">
+    <div class="wrap">
+      <div class="intro-inner reveal">
+        <span class="intro-sub">営業スキルアップ塾</span>
+        <h2 class="intro-title">さおり塾</h2>
+        <div class="intro-mark"></div>
       </div>
     </div>
   </section>
