@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>株式会社Be Confident｜営業スキルアップ・コンサルティング</title>
+<meta name="description" content="自信は、最強の営業スキルだ。成果に直結する営業力だけを鍛える、株式会社Be Confident。営業スキルアップに関わるコンサルティング。">
+<style>
+  /* ============================================================
+     株式会社Be Confident — Homepage
+     Brand palette (提案資料より): Navy × Rose × Cyan
+     ディープネイビー基調・単一ダークテーマ。全色をトークンで明示。
+     ============================================================ */
+
+  :root{
+    /* --- ground --- */
+    --navy:#0E2138;        /* base */
+    --navy-2:#0A1929;      /* deeper */
+    --panel:#132A46;       /* raised surface */
+    --card:#163050;        /* card */
+    --card-2:#1B3C60;      /* card highlight */
+    --peri:#4A6DA8;        /* periwinkle (brand gradient top) */
+
+    --line:rgba(206,222,244,.12);
+    --line-soft:rgba(206,222,244,.07);
+
+    /* --- text --- */
+    --paper:#EAF1F9;
+    --dim:#A6B7CD;
+    --faint:#6F8299;
+
+    /* --- accents (brand) --- */
+    --rose:#E0899F;        /* primary accent */
+    --rose-bright:#EFB1C0;
+    --rose-deep:#C56F86;
+    --cyan:#57D6DE;        /* secondary accent / data */
+    --cyan-deep:#37AEB6;
+
+    --font-jp:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,"Noto Sans JP",Meiryo,system-ui,sans-serif;
+    --font-serif:Georgia,"Times New Roman","Hiragino Mincho ProN","Yu Mincho",serif;
+    --font-mono:ui-monospace,"SFMono-Regular","SF Mono",Menlo,Consolas,"Courier New",monospace;
+
+    --wrap:1160px;
+    --pad:clamp(20px,5vw,64px);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    margin:0;
+    background:var(--navy);
+    color:var(--paper);
+    font-family:var(--font-jp);
+    font-weight:400;
+    line-height:1.85;
+    letter-spacing:.02em;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  ::selection{background:var(--rose);color:#0E2138}
+  :focus-visible{outline:2px solid var(--rose-bright);outline-offset:3px;border-radius:2px}
+
+  .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--pad)}
+
+  /* ---- shared type helpers ---- */
+  .eyebrow{
+    font-family:var(--font-mono);font-size:.72rem;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--rose);display:inline-flex;align-items:center;
+    gap:.7em;font-weight:500;
+  }
+  .eyebrow::before{
+    content:"";width:34px;height:1px;background:linear-gradient(90deg,var(--rose),transparent);display:inline-block;
+  }
+
+  h1,h2,h3{font-weight:700;line-height:1.3;letter-spacing:.01em;text-wrap:balance;margin:0}
+
+  .section{padding-block:clamp(72px,11vw,140px);position:relative}
+  .section + .section{border-top:1px solid var(--line-soft)}
+
+  /* section header device — 提案資料の見出し帯を踏襲（縦バー＋タイトル＋細いグラデ罫） */
+  .sec-head{margin-bottom:clamp(36px,5vw,60px)}
+  .sec-head .row{display:flex;align-items:baseline;gap:1.2rem;flex-wrap:wrap}
+  .sec-title{
+    font-size:clamp(1.7rem,4.2vw,2.9rem);letter-spacing:.02em;position:relative;
+    padding-left:1rem;
+  }
+  .sec-title::before{
+    content:"";position:absolute;left:0;top:.12em;bottom:.12em;width:5px;border-radius:3px;
+    background:linear-gradient(180deg,var(--rose),var(--cyan));
+  }
+  .sec-title .en{
+    display:block;font-family:var(--font-mono);font-weight:500;font-size:.3em;
+    letter-spacing:.28em;text-transform:uppercase;color:var(--rose);margin-bottom:.9em;
+  }
+  .sec-rule{height:1px;margin-top:1.4rem;background:linear-gradient(90deg,var(--line),transparent)}
+  .lead{color:var(--dim);max-width:60ch;font-size:1.02rem}
+
+  /* ============================================================ Header */
+  header.site{
+    position:sticky;top:0;z-index:50;backdrop-filter:saturate(150%) blur(14px);
+    background:rgba(10,25,41,.74);border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px;gap:1.5rem}
+  .brand{display:flex;flex-direction:column;line-height:1;gap:5px}
+  .brand .mark{font-size:1.14rem;font-weight:700;letter-spacing:.12em}
+  .brand .mark b{color:var(--rose);font-weight:700}
+  .brand .sub{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.3em;color:var(--faint);text-transform:uppercase}
+  .nav-links{display:flex;align-items:center;gap:2rem}
+  .nav-links a{font-size:.86rem;color:var(--dim);letter-spacing:.06em;position:relative;padding-block:4px;transition:color .2s}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--rose);transition:width .28s ease}
+  .nav-links a:hover{color:var(--paper)}
+  .nav-links a:hover::after{width:100%}
+  @media (max-width:900px){.nav-links{display:none}}
+
+  .btn{
+    --bg:var(--rose);--fg:#20101a;
+    display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+    font-family:var(--font-jp);font-weight:700;font-size:.9rem;letter-spacing:.05em;
+    padding:.78em 1.5em;border-radius:3px;border:1px solid transparent;
+    background:var(--bg);color:var(--fg);cursor:pointer;
+    transition:transform .18s ease,box-shadow .28s ease,background .2s;white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px -10px rgba(224,137,159,.55)}
+  .btn .arw{transition:transform .22s ease}
+  .btn:hover .arw{transform:translateX(4px)}
+  .btn.sm{padding:.6em 1.15em;font-size:.82rem}
+  .btn.ghost{background:transparent;color:var(--paper);border-color:var(--line)}
+  .btn.ghost:hover{border-color:var(--cyan);background:rgba(87,214,222,.07);box-shadow:none}
+  @media (max-width:900px){.nav .btn.header-cta{display:none}}
+
+  /* ============================================================ Hero */
+  .hero{position:relative;overflow:hidden;padding-block:clamp(96px,16vw,190px) clamp(64px,10vw,112px);border-bottom:1px solid var(--line-soft)}
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(52% 46% at 78% 4%,rgba(224,137,159,.20),transparent 62%),
+      radial-gradient(46% 52% at 6% 96%,rgba(87,214,222,.12),transparent 60%);
+  }
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;z-index:0;background:linear-gradient(90deg,transparent,rgba(224,137,159,.4),rgba(87,214,222,.4),transparent)}
+  .hero .wrap{position:relative;z-index:1}
+  .hero-eyebrow{margin-bottom:2rem}
+  .hero h1{font-size:clamp(2.5rem,8.2vw,5.4rem);line-height:1.14;letter-spacing:.005em;margin-bottom:.55em}
+  .hero h1 .accent{
+    color:transparent;background:linear-gradient(120deg,var(--rose-bright),var(--rose) 45%,var(--cyan));
+    -webkit-background-clip:text;background-clip:text;
+  }
+  .hero-sub{color:var(--dim);font-size:clamp(1rem,2.3vw,1.18rem);max-width:46ch;margin-bottom:2.4rem;line-height:1.95}
+  .hero-cta{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+
+  .hero-chips{margin-top:clamp(44px,7vw,72px);display:flex;flex-wrap:wrap;gap:.7rem;padding-top:2rem;border-top:1px solid var(--line-soft)}
+  .chip{
+    display:inline-flex;align-items:center;gap:.6em;font-size:.86rem;color:var(--paper);
+    border:1px solid var(--line);border-radius:100px;padding:.5em 1.1em;background:rgba(255,255,255,.02);
+  }
+  .chip::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+  .chip:nth-child(2)::before{background:var(--rose);box-shadow:0 0 10px var(--rose)}
+
+  /* ============================================================ Strengths */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,32px)}
+  @media (max-width:820px){.grid-3{grid-template-columns:1fr}}
+  .strength{
+    padding:clamp(28px,3.4vw,40px);border:1px solid var(--line);border-radius:8px;position:relative;overflow:hidden;
+    background:linear-gradient(160deg,var(--card-2),var(--navy-2));
+    transition:transform .3s ease,border-color .3s ease;
+  }
+  .strength::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--rose),var(--cyan));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+  .strength:hover{transform:translateY(-6px);border-color:rgba(87,214,222,.4)}
+  .strength:hover::before{transform:scaleX(1)}
+  .strength .idx{font-family:var(--font-serif);font-style:italic;font-size:2.6rem;line-height:1;margin-bottom:.5rem;
+    color:transparent;background:linear-gradient(120deg,var(--rose),var(--cyan));-webkit-background-clip:text;background-clip:text}
+  .strength h3{font-size:1.24rem;margin-bottom:.7rem}
+  .strength p{color:var(--dim);font-size:.95rem;margin:0;line-height:1.9}
+
+  /* ============================================================ Program */
+  .program-list{display:flex;flex-direction:column}
+  .course{
+    display:grid;grid-template-columns:auto 1fr auto;gap:clamp(18px,4vw,52px);align-items:center;
+    padding:clamp(26px,3.6vw,40px) 0;border-top:1px solid var(--line);transition:padding-left .3s ease;
+  }
+  .program-list .course:last-child{border-bottom:1px solid var(--line)}
+  .course:hover{padding-left:14px}
+  .course .num{font-family:var(--font-mono);color:var(--rose);font-size:.9rem;letter-spacing:.1em}
+  .course:hover .num{color:var(--cyan)}
+  .course .body h3{font-size:clamp(1.15rem,2.6vw,1.5rem);margin-bottom:.5rem}
+  .course .body p{margin:0;color:var(--dim);font-size:.94rem;max-width:56ch}
+  .course .meta{text-align:right;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;color:var(--paper);line-height:1.9;white-space:nowrap}
+  .course .meta span{color:var(--faint)}
+  @media (max-width:720px){.course{grid-template-columns:auto 1fr;gap:14px 18px}.course .meta{grid-column:1 / -1;text-align:left}}
+
+  /* ============================================================ Statement band */
+  .band{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--navy-2),var(--navy));border-block:1px solid var(--line-soft)}
+  .band::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(50% 120% at 50% 0%,rgba(224,137,159,.14),transparent 60%)}
+  .statement{position:relative;z-index:1;text-align:center;max-width:22ch;margin-inline:auto}
+  .statement .q{font-family:var(--font-serif);font-size:clamp(3rem,9vw,5rem);line-height:.4;color:var(--rose);display:block;height:.5em}
+  .statement h2{font-size:clamp(1.8rem,5vw,3rem);line-height:1.4;letter-spacing:.03em}
+  .statement h2 .u{
+    background:linear-gradient(transparent 62%,rgba(224,137,159,.45) 62%);padding-inline:.1em;
+  }
+  .statement p{color:var(--dim);margin-top:1.6rem;font-size:1.02rem;max-width:48ch;margin-inline:auto}
+
+  /* ============================================================ Profile */
+  .profile{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(32px,5vw,72px);align-items:center}
+  @media (max-width:820px){.profile{grid-template-columns:1fr}}
+  .portrait{
+    aspect-ratio:4/5;border-radius:8px;position:relative;overflow:hidden;border:1px solid var(--line);display:flex;align-items:flex-end;
+    background:radial-gradient(120% 90% at 26% 0%,rgba(224,137,159,.28),transparent 52%),linear-gradient(160deg,var(--peri),var(--navy-2));
+  }
+  .portrait .initials{font-family:var(--font-serif);font-style:italic;font-weight:700;font-size:clamp(3rem,10vw,6rem);color:rgba(255,255,255,.24);position:absolute;top:6%;left:8%;line-height:1}
+  .portrait .cap{position:relative;padding:22px 24px;width:100%;background:linear-gradient(0deg,rgba(8,18,30,.92),transparent);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;color:var(--dim)}
+  .portrait .cap b{display:block;font-family:var(--font-jp);font-size:1.4rem;letter-spacing:.04em;color:var(--paper);margin-bottom:.2em}
+  .profile-body .role{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;color:var(--rose);text-transform:uppercase}
+  .profile-body h3{font-size:clamp(1.4rem,3.4vw,2rem);margin:.6rem 0 1.2rem}
+  .profile-body p{color:var(--dim);font-size:1rem;margin:0 0 1.1rem;line-height:2}
+  .sign{font-family:var(--font-serif);font-style:italic;font-size:1.3rem;color:var(--rose);margin-top:1.4rem}
+
+  /* ============================================================ Voice */
+  .voices{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.5vw,26px)}
+  @media (max-width:820px){.voices{grid-template-columns:1fr}}
+  .voice{padding:clamp(24px,3vw,34px);border:1px solid var(--line);border-radius:8px;background:var(--panel);display:flex;flex-direction:column;gap:1.2rem}
+  .voice .q{font-family:var(--font-serif);font-size:2.4rem;color:var(--rose-deep);line-height:.6;height:.4em}
+  .voice p{margin:0;color:var(--dim);font-size:.96rem;line-height:1.95;flex:1}
+  .voice .who{display:flex;align-items:center;gap:.8rem;padding-top:1rem;border-top:1px solid var(--line-soft)}
+  .voice .who .av{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;color:#0E2138;font-weight:700;font-size:.9rem;background:linear-gradient(150deg,var(--rose),var(--cyan))}
+  .voice .who .txt b{display:block;font-size:.9rem}
+  .voice .who .txt span{font-size:.74rem;color:var(--faint);font-family:var(--font-mono);letter-spacing:.06em}
+
+  /* ============================================================ Company */
+  .company-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .crow{display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--line-soft)}
+  .crow:first-child{border-top:none}
+  .company-grid{display:block}
+  .crow .k{background:linear-gradient(120deg,var(--peri),var(--card));font-family:var(--font-mono);font-size:.74rem;letter-spacing:.14em;color:#fff;padding:1.1em 1.4em;display:flex;align-items:center}
+  .crow .v{padding:1.1em 1.4em;color:var(--paper);font-size:.96rem}
+  .crow .v a{color:var(--cyan)}
+  .crow .v a:hover{text-decoration:underline}
+  @media (max-width:560px){.crow{grid-template-columns:110px 1fr}.crow .k{font-size:.66rem;padding:1em}}
+
+  /* ============================================================ Contact CTA */
+  .cta-band{position:relative;overflow:hidden;text-align:center;background:linear-gradient(180deg,var(--navy-2),#081522)}
+  .cta-band::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 90% at 50% 120%,rgba(224,137,159,.22),transparent 60%),radial-gradient(50% 80% at 15% 0%,rgba(87,214,222,.10),transparent 60%)}
+  .cta-inner{position:relative;z-index:1;padding-block:clamp(72px,11vw,128px);display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+  .cta-inner h2{font-size:clamp(1.9rem,5.5vw,3.4rem);line-height:1.3}
+  .cta-inner h2 .accent{color:var(--rose)}
+  .cta-inner p{color:var(--dim);max-width:50ch;margin:0}
+  .cta-actions{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center;margin-top:.6rem}
+  .cta-note{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;color:var(--faint);margin-top:.4rem}
+
+  /* ============================================================ Footer */
+  footer.site{background:var(--navy-2);border-top:1px solid var(--line);padding-block:clamp(48px,7vw,72px)}
+  .foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;align-items:flex-start}
+  .foot-brand .mark{font-size:1.2rem;font-weight:700;letter-spacing:.12em}
+  .foot-brand .mark b{color:var(--rose)}
+  .foot-brand p{color:var(--faint);font-size:.82rem;margin:.9rem 0 0;max-width:34ch;line-height:1.9}
+  .foot-cols{display:flex;gap:clamp(32px,6vw,72px);flex-wrap:wrap}
+  .foot-col h4{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.2em;color:var(--rose);text-transform:uppercase;margin:0 0 1.1rem;font-weight:500}
+  .foot-col a{display:block;color:var(--dim);font-size:.88rem;padding:.35em 0;transition:color .2s}
+  .foot-col a:hover{color:var(--cyan)}
+  .foot-bottom{margin-top:clamp(40px,6vw,64px);padding-top:1.5rem;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;color:var(--faint)}
+
+  /* ---- scroll reveal ---- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.btn,.strength,.course{transition:none}}
+
+  /* demo banner */
+  .draft{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;color:var(--faint);text-align:center;padding:10px;border-bottom:1px solid var(--line-soft);background:var(--navy-2)}
+  .draft b{color:var(--rose)}
+</style>
+</head>
+<body>
+
+<div class="draft">DEMO — キャッチコピー・受講者の声・数値は仮です。<b>会社概要は提案資料の実データを反映しています。</b></div>
+
+<!-- ============ HEADER ============ -->
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Be Confident トップへ">
+      <span class="mark">Be&nbsp;<b>Confident</b></span>
+      <span class="sub">Sales Skill Consulting</span>
+    </a>
+    <nav class="nav-links" aria-label="メインナビゲーション">
+      <a href="#strength">強み</a>
+      <a href="#program">講座</a>
+      <a href="#profile">代表</a>
+      <a href="#voice">受講者の声</a>
+      <a href="#company">会社概要</a>
+    </nav>
+    <a href="#contact" class="btn sm header-cta">無料相談 <span class="arw">→</span></a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow hero-eyebrow">Sales Skill Consulting</span>
+      <h1>自信は、<br><span class="accent">最強の営業スキル</span>だ。</h1>
+      <p class="hero-sub">「なんとなく売れない」を、再現性のある「売れる」へ。<br>Be&nbsp;Confident は、成果に直結する営業力だけを鍛えるスキル塾です。</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn">無料相談を予約する <span class="arw">→</span></a>
+        <a href="#program" class="btn ghost">講座内容を見る</a>
+      </div>
+      <div class="hero-chips">
+        <span class="chip">体系化された「型」</span>
+        <span class="chip">現場主義のロールプレイ</span>
+        <span class="chip">伴走型コーチング</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STRENGTH ============ -->
+  <section class="section" id="strength">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row"><h2 class="sec-title"><span class="en">Why Be Confident</span>選ばれる、3つの理由。</h2></div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="grid-3">
+        <article class="strength reveal">
+          <div class="idx">01</div>
+          <h3>現場で使える「型」</h3>
+          <p>精神論や度胸ではなく、誰でも再現できる営業の型を習得。ロールプレイ中心だから、翌日の商談でそのまま使えます。</p>
+        </article>
+        <article class="strength reveal">
+          <div class="idx">02</div>
+          <h3>課題を可視化して改善</h3>
+          <p>ヒアリングで営業プロセスの課題を洗い出し、「どこを直せば売れるか」を明確化。感覚ではなく仕組みで伸ばします。</p>
+        </article>
+        <article class="strength reveal">
+          <div class="idx">03</div>
+          <h3>伴走型で効果にコミット</h3>
+          <p>学んで終わりにしません。実際の商談に合わせて継続的に伴走し、成果が出るまで並走するコンサルティング型です。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRAM ============ -->
+  <section class="section" id="program">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row">
+          <h2 class="sec-title"><span class="en">Program</span>講座内容</h2>
+          <p class="lead">基礎から実践、個別最適化まで。あなたの現在地に合わせて選べる3つのステップ。</p>
+        </div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="program-list">
+        <div class="course reveal">
+          <div class="num">01</div>
+          <div class="body">
+            <h3>ベーシック｜営業の型</h3>
+            <p>ヒアリング・課題設定・信頼構築の基礎を体系的に。売れる営業に共通する「型」を最短で身につけます。</p>
+          </div>
+          <div class="meta">全6回 / 3ヶ月<br><span>オンライン・対面</span></div>
+        </div>
+        <div class="course reveal">
+          <div class="num">02</div>
+          <div class="body">
+            <h3>アドバンス｜提案とクロージング</h3>
+            <p>提案の設計、反論処理、クロージングの技術を実践演習で徹底。商談を「決めきる」力を磨きます。</p>
+          </div>
+          <div class="meta">全8回 / 4ヶ月<br><span>対面中心</span></div>
+        </div>
+        <div class="course reveal">
+          <div class="num">03</div>
+          <div class="body">
+            <h3>個別コンサル｜あなたの商材で</h3>
+            <p>実際の商談・提案資料をもとに1対1で伴走。あなたの業界・商材に合わせて営業プロセスを個別最適化します。</p>
+          </div>
+          <div class="meta">月2回 / 継続制<br><span>マンツーマン</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATEMENT BAND ============ -->
+  <section class="section band">
+    <div class="wrap">
+      <div class="statement reveal">
+        <span class="q">&ldquo;</span>
+        <h2>「売れない」は、才能ではなく<br><span class="u">スキル不足</span>です。</h2>
+        <p>正しい訓練を積めば、成果は誰でも再現できる。私たちはそう確信しています。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROFILE ============ -->
+  <section class="section" id="profile">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row"><h2 class="sec-title"><span class="en">Representative</span>代表挨拶</h2></div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="profile">
+        <div class="portrait reveal">
+          <span class="initials">BC</span>
+          <div class="cap"><b>山田 太郎</b>代表取締役 / 主任講師</div>
+        </div>
+        <div class="profile-body reveal">
+          <span class="role">Message</span>
+          <h3>お客様に、堂々と<br>向き合える自信を。</h3>
+          <p>私自身、かつては全く売れない営業でした。しかし「型」を学び、実践し、検証を重ねる中で、成果は誰でも再現できると確信するようになりました。</p>
+          <p>Be&nbsp;Confident が伝えたいのは、小手先のテクニックではありません。お客様に本気で向き合い、堂々と提案できる「自信」を、正しい訓練で身につけていただくこと。あなたの営業が、明日から変わります。</p>
+          <div class="sign">山田 太郎</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VOICE ============ -->
+  <section class="section" id="voice">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row"><h2 class="sec-title"><span class="en">Voice</span>受講者の声</h2></div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="voices">
+        <article class="voice reveal">
+          <div class="q">&ldquo;</div>
+          <p>感覚で売っていたことに気づきました。型を学んでから商談の再現性が上がり、提案が通る手応えがまるで違います。もっと早く受ければよかった。</p>
+          <div class="who"><span class="av">A</span><span class="txt"><b>A.K さん</b><span>IT・法人営業 / 3年目</span></span></div>
+        </article>
+        <article class="voice reveal">
+          <div class="q">&ldquo;</div>
+          <p>人前で話すのが苦手でしたが、ロールプレイを重ねるうちに堂々と提案できるように。数字だけでなく、営業そのものが楽しくなりました。</p>
+          <div class="who"><span class="av">M</span><span class="txt"><b>M.T さん</b><span>人材・無形商材 / 未経験</span></span></div>
+        </article>
+        <article class="voice reveal">
+          <div class="q">&ldquo;</div>
+          <p>個別コンサルで自社の商材に合わせた改善ができたのが大きい。提案資料からトークまで見直して、単価の高い案件に挑戦できるようになりました。</p>
+          <div class="who"><span class="av">S</span><span class="txt"><b>S.N さん</b><span>製造・代理店営業 / 管理職</span></span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPANY ============ -->
+  <section class="section" id="company">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row"><h2 class="sec-title"><span class="en">Company</span>会社概要</h2></div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="company-grid">
+        <div class="crow"><div class="k">会社名</div><div class="v">株式会社Be&nbsp;Confident</div></div>
+        <div class="crow"><div class="k">所在地</div><div class="v">〒104-0061　東京都中央区銀座6-13-16 銀座WallビルUCF5階</div></div>
+        <div class="crow"><div class="k">事業内容</div><div class="v">営業スキルアップに関わるコンサルティング業　他</div></div>
+        <div class="crow"><div class="k">資本金</div><div class="v">100万円</div></div>
+        <div class="crow"><div class="k">設立</div><div class="v">2026年6月10日</div></div>
+        <div class="crow"><div class="k">Webサイト</div><div class="v"><a href="https://www.beconfident.co.jp/">https://www.beconfident.co.jp/</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="cta-band" id="contact">
+    <div class="wrap cta-inner">
+      <span class="eyebrow">Contact</span>
+      <h2>「売れない」を、<span class="accent">今日で終わりに。</span></h2>
+      <p>まずは無料相談で、あなたの営業の課題を一緒に整理しましょう。<br>オンライン・対面どちらでもご相談いただけます。</p>
+      <div class="cta-actions">
+        <a href="mailto:info@beconfident.co.jp" class="btn">無料相談を予約する <span class="arw">→</span></a>
+        <a href="#program" class="btn ghost">講座資料を請求する</a>
+      </div>
+      <p class="cta-note">受付 平日 10:00–19:00 ／ 東京・銀座</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="mark">Be&nbsp;<b>Confident</b></div>
+        <p>営業スキルアップに関わるコンサルティング。成果に直結する営業力だけを鍛える、株式会社Be&nbsp;Confident。</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>Menu</h4>
+          <a href="#strength">選ばれる理由</a>
+          <a href="#program">講座内容</a>
+          <a href="#profile">代表挨拶</a>
+          <a href="#voice">受講者の声</a>
+        </div>
+        <div class="foot-col">
+          <h4>Company</h4>
+          <a href="#company">会社概要</a>
+          <a href="#contact">お問い合わせ</a>
+          <a href="https://www.beconfident.co.jp/">公式サイト</a>
+          <a href="#top">プライバシーポリシー</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Be Confident Inc. All rights reserved.</span>
+      <span>東京都中央区銀座6-13-16 銀座WallビルUCF5階</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = document.querySelectorAll('.reveal');
+    if(reduce || !('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in')});return;}
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+    },{threshold:.14,rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(el,i){el.style.transitionDelay=(i%3*90)+'ms';io.observe(el);});
+  })();
+</script>
+
+</body>
+</html>
