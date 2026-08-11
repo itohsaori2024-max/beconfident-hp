@@ -1,0 +1,542 @@
+<!-- ============================================================
+     株式会社Be Confident — SWELL 本文（全部入り・ヒーロー無し版）
+     ★このブロック1つに デザイン(CSS) も入っているので、追加CSSは不要です。
+     貼り付け先: 固定ページ >「カスタムHTML」ブロックに丸ごと貼る。
+     ※ ヒーロー(売ることが…)はSWELLのメインビジュアルを使う前提で外してあります。
+     ============================================================ -->
+<style>
+/* ============================================================
+   株式会社Be Confident — SWELL 追加CSS
+   貼り付け先: 外観 > カスタマイズ > 追加CSS
+   ※ すべて .bc スコープなので SWELL 本体の見た目に影響しません。
+   ============================================================ */
+/* ============================================================
+     株式会社Be Confident — Homepage（白基調・ウォームエレガント版）
+     Palette: Warm white × Charcoal × Rose（提案資料のローズを主役に）
+     明朝体の大見出し＋切り抜き写真ヒーロー。単一ライトテーマにコミット。
+     ============================================================ */
+
+  
+:root{
+    /* --- ground --- */
+    --paper:#FBF9F6;      /* warm off-white base */
+    --paper-2:#F4EFE9;    /* warm panel */
+    --card:#FFFFFF;
+    --line:rgba(50,44,40,.13);
+    --line-soft:rgba(50,44,40,.07);
+
+    /* --- text --- */
+    --ink:#33302B;        /* warm charcoal */
+    --ink-soft:#6B655D;
+    --faint:#9E958A;
+
+    /* --- accents --- */
+    --rose:#D98BA0;       /* primary accent (brand) */
+    --rose-deep:#BE6E86;
+    --rose-soft:#F5DDE4;
+    --taupe:#B0937A;      /* handwriting / signature */
+    --navy:#16324F;       /* deep brand navy — footer & sparing use */
+
+    --font-jp:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,"Noto Sans JP",Meiryo,system-ui,sans-serif;
+    --font-mincho:"Yu Mincho",YuMincho,"Hiragino Mincho ProN","Hiragino Mincho Pro","Noto Serif JP","Shippori Mincho",serif;
+    --font-script:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;
+    --font-mono:ui-monospace,"SFMono-Regular","SF Mono",Menlo,Consolas,"Courier New",monospace;
+
+    --wrap:1160px;
+    --pad:clamp(20px,5vw,64px);
+  }
+
+  
+.bc, .bc *{box-sizing:border-box}
+  
+  
+
+  
+.bc{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--font-jp);font-weight:400;line-height:1.9;letter-spacing:.02em;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;
+  }
+  
+.bc a{color:inherit;text-decoration:none}
+  
+.bc img{max-width:100%;display:block}
+  
+.bc ::selection{background:var(--rose-soft);color:var(--ink)}
+  
+.bc :focus-visible{outline:2px solid var(--rose-deep);outline-offset:3px;border-radius:2px}
+
+  
+.bc .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--pad)}
+
+  /* ---- shared type helpers ---- */
+  
+.bc .eyebrow{
+    font-family:var(--font-mono);font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--rose-deep);display:inline-flex;align-items:center;gap:.7em;font-weight:500;
+  }
+  
+.bc .eyebrow::before{content:"";width:34px;height:1px;background:linear-gradient(90deg,var(--rose),transparent);display:inline-block}
+
+  
+.bc h1, .bc h2, .bc h3{margin:0;font-weight:600;line-height:1.4;letter-spacing:.02em;text-wrap:balance}
+
+  
+.bc .section{padding-block:clamp(72px,11vw,138px);position:relative}
+  
+.bc .section + .section{border-top:1px solid var(--line-soft)}
+
+  /* section header — 明朝タイトル＋ローズの細い印 */
+  
+.bc .sec-head{margin-bottom:clamp(36px,5vw,60px)}
+  
+.bc .sec-head .row{display:flex;align-items:flex-end;gap:1.4rem;flex-wrap:wrap;justify-content:space-between}
+  
+.bc .sec-title{
+    font-family:var(--font-mincho);font-weight:600;
+    font-size:clamp(1.7rem,4.4vw,2.9rem);letter-spacing:.06em;line-height:1.3;
+  }
+  
+.bc .sec-title .en{
+    display:block;font-family:var(--font-mono);font-weight:500;font-size:.28em;
+    letter-spacing:.28em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:1em;letter-spacing:.3em;
+  }
+  
+.bc .sec-rule{height:1px;margin-top:1.5rem;background:linear-gradient(90deg,var(--rose),var(--line) 40%,transparent)}
+  
+.bc .lead{color:var(--ink-soft);max-width:56ch;font-size:1rem}
+
+  /* ============================================================ Header */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+.bc .btn{
+    --bg:var(--rose);--fg:#fff;
+    display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+    font-family:var(--font-jp);font-weight:700;font-size:.9rem;letter-spacing:.05em;
+    padding:.82em 1.6em;border-radius:100px;border:1px solid transparent;
+    background:var(--bg);color:var(--fg);cursor:pointer;
+    transition:transform .18s ease,box-shadow .28s ease,background .2s;white-space:nowrap;
+  }
+  
+.bc .btn:hover{transform:translateY(-2px);background:var(--rose-deep);box-shadow:0 12px 26px -10px rgba(190,110,134,.6)}
+  
+.bc .btn .arw{transition:transform .22s ease}
+  
+.bc .btn:hover .arw{transform:translateX(4px)}
+  
+.bc .btn.sm{padding:.6em 1.2em;font-size:.82rem}
+  
+.bc .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  
+.bc .btn.ghost:hover{border-color:var(--rose);background:rgba(217,139,160,.06);box-shadow:none}
+  
+
+  /* ============================================================ Hero（写真ババーン） */
+  
+.bc .hero{position:relative;overflow:hidden;padding-block:clamp(48px,8vw,88px) clamp(56px,9vw,104px)}
+  
+.bc .hero::before{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(46% 60% at 88% 22%,rgba(245,221,228,.7),transparent 60%);
+  }
+  
+.bc .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,56px);align-items:center;min-height:min(72vh,640px)}
+  @media (max-width:860px){
+.bc .hero-grid{grid-template-columns:1fr;text-align:center}}
+
+  
+.bc .hero-copy .eyebrow{margin-bottom:2rem}
+  @media (max-width:860px){
+.bc .hero-copy .eyebrow{justify-content:center}}
+  
+.bc .hero h1{
+    font-family:var(--font-mincho);font-weight:600;
+    font-size:clamp(2.7rem,7.6vw,4.9rem);line-height:1.32;letter-spacing:.08em;color:var(--ink);
+  }
+  
+.bc .hero h1 .em{color:var(--rose-deep)}
+  
+.bc .hero .sign{font-family:var(--font-script);font-size:clamp(1.8rem,4vw,2.6rem);color:var(--taupe);margin-top:.4em;line-height:1}
+  
+.bc .hero .sign::before{content:"";display:inline-block;width:38px;height:1px;background:var(--taupe);vertical-align:middle;margin-right:.5em;opacity:.6}
+  
+.bc .hero-sub{color:var(--ink-soft);font-size:clamp(1rem,2.2vw,1.12rem);max-width:40ch;margin:1.8rem 0 2.2rem;line-height:1.95}
+  @media (max-width:860px){
+.bc .hero-sub{margin-inline:auto}}
+  
+.bc .hero-cta{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+  @media (max-width:860px){
+.bc .hero-cta{justify-content:center}}
+
+  /* 写真プレースホルダー（本番はここに切り抜き写真を配置） */
+  
+.bc .hero-photo{
+    position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden;
+    background:radial-gradient(120% 100% at 70% 10%,#FCEBEF,#F4EFE9 60%,#EFE7DE);
+    border:1px solid var(--line-soft);display:grid;place-items:center;
+  }
+  @media (max-width:860px){
+.bc .hero-photo{max-width:380px;margin-inline:auto;width:100%}}
+  
+.bc .hero-photo .ph{display:flex;flex-direction:column;align-items:center;gap:1rem;color:var(--faint);padding:24px;text-align:center}
+  
+.bc .hero-photo svg{width:96px;height:96px;opacity:.5}
+  
+.bc .hero-photo .ph b{font-family:var(--font-jp);font-weight:700;color:var(--ink-soft);font-size:.95rem;letter-spacing:.06em}
+  
+.bc .hero-photo .ph small{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;line-height:1.7;max-width:22ch}
+  
+.bc .hero-photo .badge{
+    position:absolute;left:20px;bottom:20px;background:var(--card);border:1px solid var(--line);
+    border-radius:100px;padding:.5em 1.1em;font-size:.78rem;letter-spacing:.04em;color:var(--ink);
+    box-shadow:0 8px 24px -14px rgba(50,44,40,.4);
+  }
+  
+.bc .hero-photo .badge b{color:var(--rose-deep)}
+
+  /* ============================================================ Strengths */
+  
+.bc .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,30px)}
+  @media (max-width:820px){
+.bc .grid-3{grid-template-columns:1fr}}
+  
+.bc .strength{
+    padding:clamp(28px,3.4vw,40px);border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden;
+    background:var(--card);box-shadow:0 18px 40px -30px rgba(50,44,40,.5);
+    transition:transform .3s ease,box-shadow .3s ease;
+  }
+  
+.bc .strength::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--rose),var(--rose-soft));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+  
+.bc .strength:hover{transform:translateY(-6px);box-shadow:0 26px 50px -30px rgba(190,110,134,.55)}
+  
+.bc .strength:hover::before{transform:scaleX(1)}
+  
+.bc .strength .idx{font-family:var(--font-mincho);font-size:2.4rem;line-height:1;margin-bottom:.5rem;color:var(--rose)}
+  
+.bc .strength h3{font-family:var(--font-mincho);font-size:1.28rem;letter-spacing:.04em;margin-bottom:.7rem}
+  
+.bc .strength p{color:var(--ink-soft);font-size:.95rem;margin:0;line-height:1.95}
+
+  /* ============================================================ Program */
+  
+.bc .program-list{display:flex;flex-direction:column}
+  
+.bc .course{
+    display:grid;grid-template-columns:auto 1fr auto;gap:clamp(18px,4vw,52px);align-items:center;
+    padding:clamp(26px,3.6vw,38px) 0;border-top:1px solid var(--line);transition:padding-left .3s ease;
+  }
+  
+.bc .program-list .course:last-child{border-bottom:1px solid var(--line)}
+  
+.bc .course:hover{padding-left:14px}
+  
+.bc .course .num{font-family:var(--font-mincho);color:var(--rose);font-size:1.4rem}
+  
+.bc .course .body h3{font-family:var(--font-mincho);font-size:clamp(1.2rem,2.6vw,1.55rem);letter-spacing:.04em;margin-bottom:.5rem}
+  
+.bc .course .body p{margin:0;color:var(--ink-soft);font-size:.94rem;max-width:56ch}
+  
+.bc .course .meta{text-align:right;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;color:var(--ink);line-height:1.9;white-space:nowrap}
+  
+.bc .course .meta span{color:var(--faint)}
+  @media (max-width:720px){
+.bc .course{grid-template-columns:auto 1fr;gap:14px 18px}
+.bc .course .meta{grid-column:1 / -1;text-align:left}}
+
+  /* ============================================================ Statement band */
+  
+.bc .band{position:relative;overflow:hidden;background:var(--paper-2)}
+  
+.bc .statement{position:relative;z-index:1;text-align:center;max-width:24ch;margin-inline:auto}
+  
+.bc .statement .q{font-family:var(--font-mincho);font-size:clamp(3rem,9vw,5rem);line-height:.3;color:var(--rose);display:block;height:.5em}
+  
+.bc .statement h2{font-family:var(--font-mincho);font-weight:600;font-size:clamp(1.8rem,5vw,3rem);line-height:1.5;letter-spacing:.05em}
+  
+.bc .statement h2 .u{background:linear-gradient(transparent 60%,var(--rose-soft) 60%);padding-inline:.1em}
+  
+.bc .statement p{color:var(--ink-soft);margin-top:1.6rem;font-size:1rem;max-width:46ch;margin-inline:auto}
+
+  /* ============================================================ Profile */
+  
+.bc .profile{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(32px,5vw,72px);align-items:center}
+  @media (max-width:820px){
+.bc .profile{grid-template-columns:1fr}}
+  
+.bc .portrait{
+    aspect-ratio:4/5;border-radius:12px;position:relative;overflow:hidden;border:1px solid var(--line-soft);
+    background:radial-gradient(120% 100% at 30% 0%,#FCEBEF,#F4EFE9 60%,#EFE7DE);display:grid;place-items:center;
+  }
+  
+.bc .portrait .ph{display:flex;flex-direction:column;align-items:center;gap:.8rem;color:var(--faint);text-align:center;padding:20px}
+  
+.bc .portrait svg{width:76px;height:76px;opacity:.5}
+  
+.bc .portrait .ph small{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;line-height:1.7}
+  
+.bc .portrait .cap{position:absolute;left:0;right:0;bottom:0;padding:20px 22px;background:linear-gradient(0deg,rgba(50,44,40,.06),transparent);font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;color:var(--ink-soft)}
+  
+.bc .portrait .cap b{display:block;font-family:var(--font-mincho);font-size:1.35rem;letter-spacing:.06em;color:var(--ink);margin-bottom:.15em}
+  
+.bc .profile-body .role{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;color:var(--rose-deep);text-transform:uppercase}
+  
+.bc .profile-body h3{font-family:var(--font-mincho);font-weight:600;font-size:clamp(1.5rem,3.6vw,2.1rem);letter-spacing:.05em;margin:.7rem 0 1.3rem;line-height:1.5}
+  
+.bc .profile-body p{color:var(--ink-soft);font-size:1rem;margin:0 0 1.1rem;line-height:2.05}
+  
+.bc .sign-name{font-family:var(--font-script);font-size:1.9rem;color:var(--taupe);margin-top:1.2rem}
+
+  /* ============================================================ Voice */
+  
+.bc .voices{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.5vw,26px)}
+  @media (max-width:820px){
+.bc .voices{grid-template-columns:1fr}}
+  
+.bc .voice{padding:clamp(24px,3vw,34px);border:1px solid var(--line);border-radius:12px;background:var(--card);display:flex;flex-direction:column;gap:1.2rem;box-shadow:0 18px 40px -32px rgba(50,44,40,.5)}
+  
+.bc .voice .q{font-family:var(--font-mincho);font-size:2.6rem;color:var(--rose);line-height:.5;height:.4em}
+  
+.bc .voice p{margin:0;color:var(--ink-soft);font-size:.96rem;line-height:2;flex:1}
+  
+.bc .voice .who{display:flex;align-items:center;gap:.8rem;padding-top:1rem;border-top:1px solid var(--line-soft)}
+  
+.bc .voice .who .av{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:.9rem;background:linear-gradient(150deg,var(--rose),var(--taupe))}
+  
+.bc .voice .who .txt b{display:block;font-size:.9rem}
+  
+.bc .voice .who .txt span{font-size:.74rem;color:var(--faint);font-family:var(--font-mono);letter-spacing:.06em}
+
+  /* ============================================================ Company */
+  
+.bc .company-grid{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+  
+.bc .crow{display:grid;grid-template-columns:160px 1fr;border-top:1px solid var(--line-soft)}
+  
+.bc .crow:first-child{border-top:none}
+  
+.bc .crow .k{background:var(--paper-2);font-family:var(--font-mono);font-size:.74rem;letter-spacing:.12em;color:var(--rose-deep);padding:1.15em 1.5em;display:flex;align-items:center;border-right:1px solid var(--line-soft)}
+  
+.bc .crow .v{padding:1.15em 1.5em;color:var(--ink);font-size:.96rem}
+  
+.bc .crow .v a{color:var(--rose-deep)}
+  
+.bc .crow .v a:hover{text-decoration:underline}
+  @media (max-width:560px){
+.bc .crow{grid-template-columns:104px 1fr}
+.bc .crow .k{font-size:.64rem;padding:1em}}
+
+  /* ============================================================ Contact CTA */
+  
+.bc .cta-band{position:relative;overflow:hidden;text-align:center;background:linear-gradient(180deg,var(--rose-soft),var(--paper))}
+  
+.bc .cta-band::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 80% at 50% -10%,rgba(217,139,160,.28),transparent 60%)}
+  
+.bc .cta-inner{position:relative;z-index:1;padding-block:clamp(72px,11vw,124px);display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+  
+.bc .cta-inner h2{font-family:var(--font-mincho);font-weight:600;font-size:clamp(1.9rem,5.5vw,3.2rem);line-height:1.45;letter-spacing:.05em}
+  
+.bc .cta-inner h2 .em{color:var(--rose-deep)}
+  
+.bc .cta-inner p{color:var(--ink-soft);max-width:48ch;margin:0}
+  
+.bc .cta-actions{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center;margin-top:.6rem}
+  
+.bc .cta-note{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;color:var(--faint);margin-top:.4rem}
+
+  /* ============================================================ Footer */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  /* ---- scroll reveal ---- */
+  
+  
+  @media (prefers-reduced-motion:reduce){
+.bc .btn, .bc .strength, .bc .course{transition:none}}
+
+  /* demo banner */
+</style>
+<div id="top" class="bc">
+<!-- ============ STRENGTH ============ -->
+  <section class="section" id="strength">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row"><h2 class="sec-title"><span class="en">Why Be Confident</span>選ばれる、3つの理由。</h2></div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="grid-3">
+        <article class="strength reveal">
+          <div class="idx">01</div>
+          <h3>現場で使える「型」</h3>
+          <p>精神論や度胸ではなく、誰でも再現できる営業の型を習得。ロールプレイ中心だから、翌日の商談でそのまま使えます。</p>
+        </article>
+        <article class="strength reveal">
+          <div class="idx">02</div>
+          <h3>課題を可視化して改善</h3>
+          <p>ヒアリングで営業プロセスの課題を洗い出し、「どこを直せば売れるか」を明確化。感覚ではなく仕組みで伸ばします。</p>
+        </article>
+        <article class="strength reveal">
+          <div class="idx">03</div>
+          <h3>伴走型で効果にコミット</h3>
+          <p>学んで終わりにしません。実際の商談に合わせて継続的に伴走し、成果が出るまで並走するコンサルティング型です。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRAM ============ -->
+  <section class="section" id="program">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row">
+          <h2 class="sec-title"><span class="en">Program</span>講座内容</h2>
+          <p class="lead">基礎から実践、個別最適化まで。あなたの現在地に合わせて選べる3つのステップ。</p>
+        </div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="program-list">
+        <div class="course reveal">
+          <div class="num">01</div>
+          <div class="body">
+            <h3>ベーシック｜営業の型</h3>
+            <p>ヒアリング・課題設定・信頼構築の基礎を体系的に。売れる営業に共通する「型」を最短で身につけます。</p>
+          </div>
+          <div class="meta">全6回 / 3ヶ月<br><span>オンライン・対面</span></div>
+        </div>
+        <div class="course reveal">
+          <div class="num">02</div>
+          <div class="body">
+            <h3>アドバンス｜提案とクロージング</h3>
+            <p>提案の設計、反論処理、クロージングの技術を実践演習で徹底。商談を「決めきる」力を磨きます。</p>
+          </div>
+          <div class="meta">全8回 / 4ヶ月<br><span>対面中心</span></div>
+        </div>
+        <div class="course reveal">
+          <div class="num">03</div>
+          <div class="body">
+            <h3>個別コンサル｜あなたの商材で</h3>
+            <p>実際の商談・提案資料をもとに1対1で伴走。あなたの業界・商材に合わせて営業プロセスを個別最適化します。</p>
+          </div>
+          <div class="meta">月2回 / 継続制<br><span>マンツーマン</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATEMENT BAND ============ -->
+  <section class="section band">
+    <div class="wrap">
+      <div class="statement reveal">
+        <span class="q">&ldquo;</span>
+        <h2>「売れない」は、才能ではなく<br><span class="u">スキル不足</span>です。</h2>
+        <p>正しい訓練を積めば、成果は誰でも再現できる。私たちはそう確信しています。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROFILE ============ -->
+  <section class="section" id="profile">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row"><h2 class="sec-title"><span class="en">Representative</span>代表挨拶</h2></div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="profile">
+        <div class="portrait reveal">
+          <!-- ▼ 写真を入れる：この <div class="ph">...</div> を消して <img> に置き換え（object-fit:cover 推奨） ▼ -->
+          <div class="ph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <small>代表写真をここに</small>
+          </div>
+          <div class="cap"><b>Saorin</b>代表取締役 / 主任講師</div>
+        </div>
+        <div class="profile-body reveal">
+          <span class="role">Message</span>
+          <h3>お客様に、堂々と<br>向き合える自信を。</h3>
+          <p>私自身、かつては全く売れない営業でした。でも「型」を学び、実践し、検証を重ねる中で、成果は誰でも再現できると確信するようになりました。</p>
+          <p>営業は、お客様に本当に必要なものを届けて幸せにする仕事。だからこそ、堂々と提案できる「自信」を、正しい訓練で身につけていただきたい。あなたの営業は、明日から変わります。</p>
+          <div class="sign-name">Saorin</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VOICE ============ -->
+  <section class="section" id="voice">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row"><h2 class="sec-title"><span class="en">Voice</span>受講者の声</h2></div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="voices">
+        <article class="voice reveal">
+          <div class="q">&ldquo;</div>
+          <p>感覚で売っていたことに気づきました。型を学んでから商談の再現性が上がり、提案が通る手応えがまるで違います。もっと早く受ければよかった。</p>
+          <div class="who"><span class="av">A</span><span class="txt"><b>A.K さん</b><span>IT・法人営業 / 3年目</span></span></div>
+        </article>
+        <article class="voice reveal">
+          <div class="q">&ldquo;</div>
+          <p>人前で話すのが苦手でしたが、ロールプレイを重ねるうちに堂々と提案できるように。数字だけでなく、営業そのものが楽しくなりました。</p>
+          <div class="who"><span class="av">M</span><span class="txt"><b>M.T さん</b><span>人材・無形商材 / 未経験</span></span></div>
+        </article>
+        <article class="voice reveal">
+          <div class="q">&ldquo;</div>
+          <p>個別コンサルで自社の商材に合わせた改善ができたのが大きい。提案資料からトークまで見直して、単価の高い案件に挑戦できるようになりました。</p>
+          <div class="who"><span class="av">S</span><span class="txt"><b>S.N さん</b><span>製造・代理店営業 / 管理職</span></span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPANY ============ -->
+  <section class="section" id="company">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="row"><h2 class="sec-title"><span class="en">Company</span>会社概要</h2></div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="company-grid">
+        <div class="crow"><div class="k">会社名</div><div class="v">株式会社Be&nbsp;Confident</div></div>
+        <div class="crow"><div class="k">所在地</div><div class="v">〒104-0061　東京都中央区銀座6-13-16 銀座WallビルUCF5階</div></div>
+        <div class="crow"><div class="k">事業内容</div><div class="v">営業スキルアップに関わるコンサルティング業　他</div></div>
+        <div class="crow"><div class="k">資本金</div><div class="v">100万円</div></div>
+        <div class="crow"><div class="k">設立</div><div class="v">2026年6月10日</div></div>
+        <div class="crow"><div class="k">Webサイト</div><div class="v"><a href="https://www.beconfident.co.jp/">https://www.beconfident.co.jp/</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="cta-band" id="contact">
+    <div class="wrap cta-inner">
+      <span class="eyebrow">Contact</span>
+      <h2>売ることを、<span class="em">誇れる自分</span>に。</h2>
+      <p>まずは無料相談で、あなたの営業の課題を一緒に整理しましょう。<br>オンライン・対面どちらでもご相談いただけます。</p>
+      <div class="cta-actions">
+        <a href="mailto:info@beconfident.co.jp" class="btn">無料相談を予約する <span class="arw">→</span></a>
+        <a href="#program" class="btn ghost">講座資料を請求する</a>
+      </div>
+      <p class="cta-note">受付 平日 10:00–19:00 ／ 東京・銀座</p>
+    </div>
+  </section>
+</div>
