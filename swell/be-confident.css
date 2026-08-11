@@ -427,3 +427,18 @@
 .bc .solution p{color:var(--ink-soft)!important;margin:1.4rem 0 0;font-size:1rem}
 .bc .solution .btn{margin-top:2rem}
 .bc .solution .btn:hover .arw{transform:translateY(3px)}
+
+/* ============================================================
+   フッター（ネイビー）— .bc 内に配置
+   ============================================================ */
+.bc .bc-footer{background:var(--navy);color:#E7EDF4;padding-block:clamp(48px,7vw,72px);margin-top:clamp(24px,4vw,48px)}
+.bc .bc-footer .wrap{max-width:var(--wrap)}
+.bc .bc-footer .foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;align-items:flex-start}
+.bc .bc-footer .foot-brand .mark{font-family:var(--font-mincho);font-size:1.3rem;font-weight:600;letter-spacing:.1em;color:#fff}
+.bc .bc-footer .foot-brand .mark b{color:var(--rose)}
+.bc .bc-footer .foot-brand p{color:#9DB0C6;font-size:.82rem;margin:.9rem 0 0;max-width:34ch;line-height:1.9}
+.bc .bc-footer .foot-cols{display:flex;gap:clamp(32px,6vw,72px);flex-wrap:wrap}
+.bc .bc-footer .foot-col h4{font-family:var(--font-mono)!important;font-size:.66rem!important;letter-spacing:.2em;color:var(--rose)!important;text-transform:uppercase;margin:0 0 1.1rem!important;font-weight:500}
+.bc .bc-footer .foot-col a{display:block;color:#B9C6D6;font-size:.88rem;padding:.35em 0;transition:color .2s ease}
+.bc .bc-footer .foot-col a:hover{color:#fff}
+.bc .bc-footer .foot-bottom{margin-top:clamp(40px,6vw,64px);padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;color:#7C8DA3}

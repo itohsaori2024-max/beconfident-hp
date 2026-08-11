@@ -433,6 +433,21 @@
 .bc .solution p{color:var(--ink-soft)!important;margin:1.4rem 0 0;font-size:1rem}
 .bc .solution .btn{margin-top:2rem}
 .bc .solution .btn:hover .arw{transform:translateY(3px)}
+
+/* ============================================================
+   フッター（ネイビー）— .bc 内に配置
+   ============================================================ */
+.bc .bc-footer{background:var(--navy);color:#E7EDF4;padding-block:clamp(48px,7vw,72px);margin-top:clamp(24px,4vw,48px)}
+.bc .bc-footer .wrap{max-width:var(--wrap)}
+.bc .bc-footer .foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;align-items:flex-start}
+.bc .bc-footer .foot-brand .mark{font-family:var(--font-mincho);font-size:1.3rem;font-weight:600;letter-spacing:.1em;color:#fff}
+.bc .bc-footer .foot-brand .mark b{color:var(--rose)}
+.bc .bc-footer .foot-brand p{color:#9DB0C6;font-size:.82rem;margin:.9rem 0 0;max-width:34ch;line-height:1.9}
+.bc .bc-footer .foot-cols{display:flex;gap:clamp(32px,6vw,72px);flex-wrap:wrap}
+.bc .bc-footer .foot-col h4{font-family:var(--font-mono)!important;font-size:.66rem!important;letter-spacing:.2em;color:var(--rose)!important;text-transform:uppercase;margin:0 0 1.1rem!important;font-weight:500}
+.bc .bc-footer .foot-col a{display:block;color:#B9C6D6;font-size:.88rem;padding:.35em 0;transition:color .2s ease}
+.bc .bc-footer .foot-col a:hover{color:#fff}
+.bc .bc-footer .foot-bottom{margin-top:clamp(40px,6vw,64px);padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;color:#7C8DA3}
 </style>
 <div id="top" class="bc">
 <!-- ============ INTRO（さおり塾） ============ -->
@@ -628,4 +643,36 @@
       <p class="cta-note">受付 平日 10:00–19:00 ／ 東京・銀座</p>
     </div>
   </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bc-footer">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="mark">Be&nbsp;<b>Confident</b></div>
+          <p>売ることが、みなさまを幸せにする。営業スキルアップに関わるコンサルティング、株式会社Be&nbsp;Confident。</p>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h4>Menu</h4>
+            <a href="#strength">選ばれる理由</a>
+            <a href="#program">講座内容</a>
+            <a href="#profile">代表挨拶</a>
+            <a href="#voice">受講者の声</a>
+          </div>
+          <div class="foot-col">
+            <h4>Company</h4>
+            <a href="#company">会社概要</a>
+            <a href="#contact">お問い合わせ</a>
+            <a href="/privacy-policy/">プライバシーポリシー</a>
+            <a href="/legal-notice/">特定商取引法に基づく表記</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Be Confident Inc. All rights reserved.</span>
+        <span>東京都中央区銀座6-13-16 銀座WallビルUCF5階</span>
+      </div>
+    </div>
+  </footer>
 </div>
