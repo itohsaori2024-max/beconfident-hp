@@ -107,8 +107,7 @@ export default async function HomePage({
 
       {/* 日本地図 */}
       <section className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="font-semibold text-neutral-800">日本地図</h2>
+        <div className="mb-3 flex items-center justify-end">
           <p className="flex items-center gap-1.5 text-xs text-neutral-500">
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-brand-pink" />
             塾生のいる都道府県（ホバー／タップで表示）

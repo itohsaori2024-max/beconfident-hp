@@ -121,13 +121,16 @@ export function UserMapExplorer({
   );
 
   return (
-    <div className="relative w-full select-none" onMouseLeave={scheduleClose}>
+    <div
+      className="relative w-full select-none rounded-xl bg-[#dcecf5] p-2 ring-1 ring-[#c3dceb]"
+      onMouseLeave={scheduleClose}
+    >
       <svg
         ref={svgRef}
         viewBox={japanMap.viewBox}
         className="h-auto w-full"
         role="img"
-        aria-label="日本地図：登録ユーザーのいる都道府県"
+        aria-label="日本地図：塾生のいる都道府県"
       >
         {locations.map((loc) => {
           const code = codeFor(loc.id);
@@ -139,13 +142,13 @@ export function UserMapExplorer({
               d={loc.path}
               data-code={code}
               className={[
-                'stroke-white transition-colors duration-150',
+                'stroke-[#8aa0b4] transition-colors duration-150',
                 filled
                   ? 'cursor-pointer fill-brand-pink hover:fill-brand-pink-dark'
-                  : 'fill-neutral-200',
+                  : 'fill-[#fbfaf7] hover:fill-[#f0ece4]',
                 isActive ? '!fill-brand-pink-dark' : '',
               ].join(' ')}
-              strokeWidth={0.7}
+              strokeWidth={0.5}
               onMouseEnter={() => handleEnter(loc.id)}
               onClick={() => handleClick(loc.id)}
             >
