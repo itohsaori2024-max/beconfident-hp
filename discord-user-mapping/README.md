@@ -122,6 +122,18 @@ discord-user-mapping/
 - セッション Cookie は HMAC-SHA256 で**署名**しているが**暗号化はしていない**ため、機微情報は入れていない（Discord ID と表示名のみ）。
 - `profiles` テーブルは RLS を有効化し、クライアント（anon キー）からの直接アクセスを禁止している。読み書きはサーバー経由のみ。
 
+## Vercel へのデプロイ
+
+このアプリは Vercel で公開できます。
+
+1. Vercel で GitHub リポジトリ（`beconfident-hp`）をインポート
+2. **Root Directory** を `discord-user-mapping` に設定
+3. **Production Branch** をこのアプリのブランチに設定
+4. 環境変数（`.env.example` の各項目）を Vercel の Environment Variables に登録
+   - `DISCORD_REDIRECT_URI` と `NEXT_PUBLIC_APP_URL` は本番ドメイン（例 `https://<project>.vercel.app`）に合わせる
+5. Discord Developer Portal の OAuth2 Redirects に本番の callback URL を追加
+6. デプロイ
+
 ## 次のステップ（予定）
 
 - Discord Embedded App SDK を用いたアクティビティ内表示
