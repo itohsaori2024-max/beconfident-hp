@@ -70,3 +70,57 @@ export function isValidPrefectureCode(code: unknown): code is string {
 export function prefectureName(code: string): string | undefined {
   return PREFECTURES.find((p) => p.code === code)?.name;
 }
+
+/**
+ * `@svg-maps/japan` のロケーションID（ローマ字）→ JIS 都道府県コードの対応表。
+ * 地図の各都道府県パスとプロフィールの prefecture_code を結び付けるために使う。
+ */
+export const SVG_ID_TO_CODE: Readonly<Record<string, string>> = {
+  hokkaido: '01',
+  aomori: '02',
+  iwate: '03',
+  miyagi: '04',
+  akita: '05',
+  yamagata: '06',
+  fukushima: '07',
+  ibaraki: '08',
+  tochigi: '09',
+  gunma: '10',
+  saitama: '11',
+  chiba: '12',
+  tokyo: '13',
+  kanagawa: '14',
+  niigata: '15',
+  toyama: '16',
+  ishikawa: '17',
+  fukui: '18',
+  yamanashi: '19',
+  nagano: '20',
+  gifu: '21',
+  shizuoka: '22',
+  aichi: '23',
+  mie: '24',
+  shiga: '25',
+  kyoto: '26',
+  osaka: '27',
+  hyogo: '28',
+  nara: '29',
+  wakayama: '30',
+  tottori: '31',
+  shimane: '32',
+  okayama: '33',
+  hiroshima: '34',
+  yamaguchi: '35',
+  tokushima: '36',
+  kagawa: '37',
+  ehime: '38',
+  kochi: '39',
+  fukuoka: '40',
+  saga: '41',
+  nagasaki: '42',
+  kumamoto: '43',
+  oita: '44',
+  miyazaki: '45',
+  kagoshima: '46',
+  okinawa: '47',
+} as const;

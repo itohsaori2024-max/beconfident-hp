@@ -2,7 +2,8 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 import { PREFECTURES } from '@/lib/prefectures';
-import { savePrefecture, type SetupFormState } from './actions';
+import type { Profile } from '@/lib/types';
+import { saveProfileDetails, type SetupFormState } from './actions';
 
 const initialState: SetupFormState = {};
 
@@ -19,11 +20,15 @@ function SubmitButton() {
   );
 }
 
-export function PrefectureForm({ defaultValue }: { defaultValue?: string | null }) {
-  const [state, formAction] = useFormState(savePrefecture, initialState);
+const fieldClass =
+  'w-full rounded-md border border-discord-light/20 bg-discord-darker px-3 py-2 text-discord-light focus:border-discord-blurple focus:outline-none';
+
+export function PrefectureForm({ profile }: { profile: Profile | null }) {
+  const [state, formAction] = useFormState(saveProfileDetails, initialState);
 
   return (
     <form action={formAction} className="w-full space-y-4">
+      {/* 都道府県（必須） */}
       <div>
         <label htmlFor="prefecture_code" className="mb-1 block text-sm font-medium">
           都道府県 <span className="text-red-400">*必須</span>
@@ -31,9 +36,9 @@ export function PrefectureForm({ defaultValue }: { defaultValue?: string | null 
         <select
           id="prefecture_code"
           name="prefecture_code"
-          defaultValue={defaultValue ?? ''}
+          defaultValue={profile?.prefecture_code ?? ''}
           required
-          className="w-full rounded-md border border-discord-light/20 bg-discord-darker px-3 py-2 text-discord-light focus:border-discord-blurple focus:outline-none"
+          className={fieldClass}
         >
           <option value="" disabled>
             選択してください
@@ -44,6 +49,70 @@ export function PrefectureForm({ defaultValue }: { defaultValue?: string | null 
             </option>
           ))}
         </select>
+      </div>
+
+      {/* 期生（必須） */}
+      <div>
+        <label htmlFor="generation" className="mb-1 block text-sm font-medium">
+          期生 <span className="text-red-400">*必須</span>
+        </label>
+        <input
+          id="generation"
+          name="generation"
+          type="text"
+          defaultValue={profile?.generation ?? ''}
+          placeholder="例: 3期生"
+          required
+          maxLength={50}
+          className={fieldClass}
+        />
+      </div>
+
+      {/* ビジネス内容（必須） */}
+      <div>
+        <label htmlFor="business_type" className="mb-1 block text-sm font-medium">
+          ビジネス内容（何を売っているか） <span className="text-red-400">*必須</span>
+        </label>
+        <input
+          id="business_type"
+          name="business_type"
+          type="text"
+          defaultValue={profile?.business_type ?? ''}
+          placeholder="例: 美容サロン向けの集客コンサル"
+          required
+          maxLength={100}
+          className={fieldClass}
+        />
+      </div>
+
+      {/* Instagram URL（任意） */}
+      <div>
+        <label htmlFor="instagram_url" className="mb-1 block text-sm font-medium">
+          Instagram URL <span className="text-discord-light/50">（任意）</span>
+        </label>
+        <input
+          id="instagram_url"
+          name="instagram_url"
+          type="url"
+          defaultValue={profile?.instagram_url ?? ''}
+          placeholder="https://www.instagram.com/your_account"
+          className={fieldClass}
+        />
+      </div>
+
+      {/* Threads URL（任意） */}
+      <div>
+        <label htmlFor="threads_url" className="mb-1 block text-sm font-medium">
+          Threads URL <span className="text-discord-light/50">（任意）</span>
+        </label>
+        <input
+          id="threads_url"
+          name="threads_url"
+          type="url"
+          defaultValue={profile?.threads_url ?? ''}
+          placeholder="https://www.threads.net/@your_account"
+          className={fieldClass}
+        />
       </div>
 
       {state.error && <p className="text-sm text-red-400">{state.error}</p>}

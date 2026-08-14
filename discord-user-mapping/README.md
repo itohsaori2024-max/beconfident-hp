@@ -11,6 +11,30 @@ Discord 内で動作するユーザーマッピングアプリ。
 - **Supabase**（プロフィール保存）
 - **Discord OAuth2**（`identify` スコープでユーザー名・アイコンを取得）
 - **@discord/embedded-app-sdk**（Discord Embedded App / Webview 表示の将来対応用に導入済み）
+- **@svg-maps/japan**（日本地図の SVG パスデータのみ。描画・スタイル・ポップアップは自前の React で制御）
+
+## プロフィール項目
+
+| 項目 | カラム | 種別 |
+|------|--------|------|
+| 都道府県 | `prefecture_code`（JIS X 0401） | 必須 |
+| 名前 | `display_name`（Discord 表示名） | 自動取得 |
+| プロフ写真 | `avatar_url` | 自動取得 |
+| 期生 | `generation` | 必須 |
+| ビジネス内容 | `business_type` | 必須 |
+| Discord ID | `discord_id` | 自動取得 |
+| Instagram URL | `instagram_url` | 任意 |
+| Threads URL | `threads_url` | 任意 |
+
+## 日本地図（メイン機能）
+
+トップ画面（`app/page.tsx`）にインタラクティブな日本地図を表示します。
+
+- 登録ユーザーがいる都道府県をハイライト＋件数ドットで表示
+- **ホバー**（PC 主体）／**タップ**（スマホ・Discord Webview）でポップアップを表示
+- ポップアップ内：都道府県名・丸型プロフ写真・名前・**期生バッジ**・ビジネス内容・連絡先ボタン
+  （Discord DM `https://discord.com/users/{discord_id}`、Instagram・Threads は登録時のみ表示）
+- 同一都道府県に複数人いる場合は縦リスト＋スクロール表示
 
 ## セットアップ
 
@@ -38,7 +62,8 @@ cp .env.example .env.local
 
 ### 3. Supabase スキーマの適用
 
-`supabase/schema.sql` の内容を Supabase の SQL Editor で実行し、`profiles` テーブルを作成します。
+- **新規構築**: `supabase/schema.sql` を Supabase の SQL Editor で実行し、`profiles` テーブルを作成します。
+- **既存テーブルの拡張**: 既に旧スキーマで作成済みの場合は `supabase/migrations/0002_extend_profiles.sql` を実行して、`generation` / `business_type` / `instagram_url` / `threads_url` を追加します（既存行があっても安全に流せます）。
 
 ### 4. 開発サーバー起動
 

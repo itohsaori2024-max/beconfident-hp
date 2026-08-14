@@ -29,6 +29,12 @@ create table if not exists public.profiles (
   -- 都道府県コード（JIS X 0401、"01"〜"47"）
   prefecture_code  text
     check (prefecture_code is null or prefecture_code ~ '^(0[1-9]|[1-3][0-9]|4[0-7])$'),
+  -- 必須項目（初回ログイン直後は空文字。アプリ側で入力を必須化）
+  generation       text not null default '',
+  business_type    text not null default '',
+  -- 任意項目（SNS リンク）
+  instagram_url    text check (instagram_url is null or instagram_url ~ '^https?://'),
+  threads_url      text check (threads_url  is null or threads_url  ~ '^https?://'),
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
 );

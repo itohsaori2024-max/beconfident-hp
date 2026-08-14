@@ -37,7 +37,7 @@ export default async function ProfileSetupPage() {
           <p className="text-lg font-semibold">{session.displayName}</p>
         </div>
 
-        <PrefectureForm defaultValue={profile?.prefecture_code} />
+        <PrefectureForm profile={profile} />
       </section>
     </main>
   );

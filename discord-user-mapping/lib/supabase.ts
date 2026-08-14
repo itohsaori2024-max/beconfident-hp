@@ -8,7 +8,7 @@
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { serverEnv, publicEnv } from './env';
-import type { Profile, ProfileUpsertInput } from './types';
+import type { Profile, ProfileUpsertInput, ProfileDetailsInput } from './types';
 
 let adminClient: SupabaseClient | null = null;
 
@@ -79,17 +79,23 @@ export async function getProfileByDiscordId(discordId: string): Promise<Profile 
   return (data as Profile) ?? null;
 }
 
-/** 必須項目「都道府県コード」を更新する。 */
-export async function updatePrefectureCode(
+/**
+ * プロフィール詳細（都道府県コード・期生・ビジネス内容・SNS URL）を更新する。
+ */
+export async function updateProfileDetails(
   discordId: string,
-  prefectureCode: string,
+  details: ProfileDetailsInput,
 ): Promise<Profile> {
   const supabase = getSupabaseAdmin();
 
   const { data, error } = await supabase
     .from('profiles')
     .update({
-      prefecture_code: prefectureCode,
+      prefecture_code: details.prefecture_code,
+      generation: details.generation,
+      business_type: details.business_type,
+      instagram_url: details.instagram_url,
+      threads_url: details.threads_url,
       updated_at: new Date().toISOString(),
     })
     .eq('discord_id', discordId)
@@ -97,8 +103,34 @@ export async function updatePrefectureCode(
     .single();
 
   if (error) {
-    throw new Error(`都道府県コードの更新に失敗しました: ${error.message}`);
+    throw new Error(`プロフィールの更新に失敗しました: ${error.message}`);
   }
 
   return data as Profile;
+}
+
+/**
+ * 地図表示用に、都道府県コードが設定済みの全プロフィールを取得し、
+ * 都道府県コードごとにグループ化して返す（Record<code, Profile[]>）。
+ */
+export async function getProfilesGroupedByPrefecture(): Promise<Record<string, Profile[]>> {
+  const supabase = getSupabaseAdmin();
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .not('prefecture_code', 'is', null)
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    throw new Error(`プロフィール一覧の取得に失敗しました: ${error.message}`);
+  }
+
+  const grouped: Record<string, Profile[]> = {};
+  for (const row of (data ?? []) as Profile[]) {
+    const code = row.prefecture_code;
+    if (!code) continue;
+    (grouped[code] ??= []).push(row);
+  }
+  return grouped;
 }
