@@ -1,5 +1,7 @@
 # Discord User Mapping
 
+<!-- Vercel: Next.js / Root Directory = discord-user-mapping -->
+
 Discord 内で動作するユーザーマッピングアプリ。
 **第一歩**として、Discord OAuth2 でログインし、ユーザーの Discord 名とアイコン画像を取得して、
 プロフィール（必須項目：**都道府県コード**）を Supabase に保存する認証ロジックを実装しています。
