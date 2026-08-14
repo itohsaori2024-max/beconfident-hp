@@ -68,7 +68,7 @@ function ContactButtons({ profile }: { profile: Profile }) {
 
 function UserCard({ profile }: { profile: Profile }) {
   return (
-    <li className="flex gap-3 rounded-lg bg-discord-darker/60 p-3">
+    <li className="flex gap-3 rounded-lg bg-neutral-50 p-3">
       {/* 丸型プロフ写真 */}
       <div className="shrink-0">
         {profile.avatar_url ? (
@@ -77,10 +77,10 @@ function UserCard({ profile }: { profile: Profile }) {
             alt=""
             width={48}
             height={48}
-            className="h-12 w-12 rounded-full object-cover ring-2 ring-discord-blurple/40"
+            className="h-12 w-12 rounded-full object-cover ring-2 ring-brand-pink/50"
           />
         ) : (
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-discord-blurple/30 text-lg font-bold">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-pink-soft text-lg font-bold text-brand-pink-dark">
             {initial(profile.display_name)}
           </div>
         )}
@@ -88,16 +88,16 @@ function UserCard({ profile }: { profile: Profile }) {
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="truncate font-semibold">{profile.display_name}</p>
+          <p className="truncate font-semibold text-neutral-800">{profile.display_name}</p>
           {/* 期生バッジ */}
           {profile.generation && (
-            <span className="shrink-0 rounded-full bg-discord-blurple/25 px-2 py-0.5 text-[11px] font-semibold text-discord-blurple">
+            <span className="shrink-0 rounded-full bg-brand-pink-soft px-2 py-0.5 text-[11px] font-semibold text-brand-pink-dark">
               {profile.generation}
             </span>
           )}
         </div>
         {profile.business_type && (
-          <p className="mt-0.5 truncate text-sm text-discord-light/70">{profile.business_type}</p>
+          <p className="mt-0.5 truncate text-sm text-neutral-500">{profile.business_type}</p>
         )}
         <ContactButtons profile={profile} />
       </div>
@@ -113,10 +113,10 @@ export function PrefecturePopup({
   users: Profile[];
 }) {
   return (
-    <div className="w-72 overflow-hidden rounded-xl border border-discord-light/10 bg-discord-dark shadow-2xl ring-1 ring-black/20">
-      <div className="flex items-center justify-between border-b border-discord-light/10 px-4 py-2.5">
-        <h3 className="font-bold">{prefectureName(prefectureCode) ?? '不明'}</h3>
-        <span className="rounded-full bg-discord-blurple/20 px-2 py-0.5 text-xs text-discord-blurple">
+    <div className="w-72 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl ring-1 ring-black/5">
+      <div className="flex items-center justify-between border-b border-neutral-100 bg-brand-pink px-4 py-2.5">
+        <h3 className="font-bold text-white">{prefectureName(prefectureCode) ?? '不明'}</h3>
+        <span className="rounded-full bg-white/25 px-2 py-0.5 text-xs font-semibold text-white">
           {users.length}人
         </span>
       </div>

@@ -13,7 +13,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-md bg-discord-blurple px-4 py-3 font-semibold text-white transition-colors hover:bg-discord-blurple-dark disabled:opacity-50"
+      className="w-full rounded-md bg-brand-pink px-4 py-3 font-semibold text-white transition-colors hover:bg-brand-pink-dark disabled:opacity-50"
     >
       {pending ? '保存中…' : '保存する'}
     </button>
@@ -21,7 +21,7 @@ function SubmitButton() {
 }
 
 const fieldClass =
-  'w-full rounded-md border border-discord-light/20 bg-discord-darker px-3 py-2 text-discord-light focus:border-discord-blurple focus:outline-none';
+  'w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-neutral-800 focus:border-brand-pink focus:outline-none focus:ring-1 focus:ring-brand-pink';
 
 export function PrefectureForm({ profile }: { profile: Profile | null }) {
   const [state, formAction] = useFormState(saveProfileDetails, initialState);

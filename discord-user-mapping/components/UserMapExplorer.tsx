@@ -139,11 +139,11 @@ export function UserMapExplorer({
               d={loc.path}
               data-code={code}
               className={[
-                'stroke-discord-darker transition-colors duration-150',
+                'stroke-white transition-colors duration-150',
                 filled
-                  ? 'cursor-pointer fill-discord-blurple/70 hover:fill-discord-blurple'
-                  : 'fill-discord-dark',
-                isActive ? '!fill-discord-blurple' : '',
+                  ? 'cursor-pointer fill-brand-pink hover:fill-brand-pink-dark'
+                  : 'fill-neutral-200',
+                isActive ? '!fill-brand-pink-dark' : '',
               ].join(' ')}
               strokeWidth={0.7}
               onMouseEnter={() => handleEnter(loc.id)}
@@ -151,17 +151,6 @@ export function UserMapExplorer({
             >
               <title>{loc.name}</title>
             </path>
-          );
-        })}
-
-        {/* 件数ドット（登録ユーザーがいる都道府県） */}
-        {Object.entries(centers).map(([code, c]) => {
-          if (!filledCodes.has(code)) return null;
-          return (
-            <g key={`dot-${code}`} className="pointer-events-none">
-              <circle cx={c.x} cy={c.y} r={4.2} className="fill-discord-green" />
-              <circle cx={c.x} cy={c.y} r={4.2} className="fill-none stroke-discord-darker" strokeWidth={0.8} />
-            </g>
           );
         })}
       </svg>

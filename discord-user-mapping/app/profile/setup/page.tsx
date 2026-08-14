@@ -17,13 +17,13 @@ export default async function ProfileSetupPage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center gap-8 px-6 py-12">
       <header className="text-center">
-        <h1 className="text-2xl font-bold">プロフィール設定</h1>
-        <p className="mt-2 text-sm text-discord-light/70">
-          必須項目の都道府県を選択して保存してください。
+        <h1 className="text-2xl font-bold text-neutral-900">プロフィール設定</h1>
+        <p className="mt-2 text-sm text-neutral-500">
+          必須項目を入力して保存してください。
         </p>
       </header>
 
-      <section className="w-full rounded-lg bg-discord-dark p-6">
+      <section className="w-full rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
         <div className="mb-6 flex items-center gap-4">
           {session.avatarUrl && (
             <Image
@@ -34,7 +34,7 @@ export default async function ProfileSetupPage() {
               className="rounded-full"
             />
           )}
-          <p className="text-lg font-semibold">{session.displayName}</p>
+          <p className="text-lg font-semibold text-neutral-800">{session.displayName}</p>
         </div>
 
         <PrefectureForm profile={profile} />
