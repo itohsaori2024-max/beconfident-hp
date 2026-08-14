@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getSession } from '@/lib/session';
 import { getProfileByDiscordId, getProfilesGroupedByPrefecture } from '@/lib/supabase';
+import type { Profile } from '@/lib/types';
 import { prefectureName } from '@/lib/prefectures';
 import { DiscordLoginButton } from '@/components/DiscordLoginButton';
 import { UserMapExplorer } from '@/components/UserMapExplorer';
@@ -23,9 +24,18 @@ export default async function HomePage({
   searchParams: { error?: string };
 }) {
   const session = getSession();
+  // DB 取得に失敗してもページ全体をクラッシュさせず、ログイン等は表示できるようにする。
   const [profile, profilesByPrefecture] = await Promise.all([
-    session ? getProfileByDiscordId(session.discordId) : Promise.resolve(null),
-    getProfilesGroupedByPrefecture(),
+    session
+      ? getProfileByDiscordId(session.discordId).catch((e) => {
+          console.error('[home] プロフィール取得に失敗:', e);
+          return null;
+        })
+      : Promise.resolve(null),
+    getProfilesGroupedByPrefecture().catch((e) => {
+      console.error('[home] プロフィール一覧の取得に失敗:', e);
+      return {} as Record<string, Profile[]>;
+    }),
   ]);
 
   const errorMessage = searchParams.error
