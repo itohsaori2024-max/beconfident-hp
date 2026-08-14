@@ -9,6 +9,16 @@ import Image from 'next/image';
 import type { Profile } from '@/lib/types';
 import { prefectureName } from '@/lib/prefectures';
 
+/**
+ * 表示名から「下の名前」を取り出す。
+ * 「伊藤 沙織」→「沙織」のように、空白（半角/全角）で区切った最後の要素を使う。
+ * 区切りが無ければ全体をそのまま返す。
+ */
+function givenName(fullName: string): string {
+  const parts = fullName.trim().split(/[\s　]+/).filter(Boolean);
+  return parts.length > 1 ? parts[parts.length - 1] : fullName.trim();
+}
+
 /** 名前の頭文字（アバター未設定時のフォールバック）。 */
 function initial(name: string): string {
   return name.trim().charAt(0).toUpperCase() || '?';
@@ -81,14 +91,14 @@ function UserCard({ profile }: { profile: Profile }) {
           />
         ) : (
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-pink-soft text-lg font-bold text-brand-pink-dark">
-            {initial(profile.display_name)}
+            {initial(givenName(profile.display_name))}
           </div>
         )}
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="truncate font-semibold text-neutral-800">{profile.display_name}</p>
+          <p className="truncate font-semibold text-neutral-800">{givenName(profile.display_name)}</p>
           {/* 期生バッジ */}
           {profile.generation && (
             <span className="shrink-0 rounded-full bg-brand-pink-soft px-2 py-0.5 text-[11px] font-semibold text-brand-pink-dark">

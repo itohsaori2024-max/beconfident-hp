@@ -122,7 +122,7 @@ export function UserMapExplorer({
 
   return (
     <div
-      className="relative w-full select-none rounded-xl bg-[#10385f] p-2 ring-1 ring-[#0c2b49]"
+      className="relative w-full select-none rounded-xl bg-[#e7eff6] p-2 ring-2 ring-[#10385f]/40"
       onMouseLeave={scheduleClose}
     >
       <svg
@@ -142,7 +142,7 @@ export function UserMapExplorer({
               d={loc.path}
               data-code={code}
               className={[
-                'stroke-[#8aa0b4] transition-colors duration-150',
+                'stroke-[#6f8aa8] transition-colors duration-150',
                 filled
                   ? 'cursor-pointer fill-brand-pink hover:fill-brand-pink-dark'
                   : 'fill-[#fbfaf7] hover:fill-[#f0ece4]',
