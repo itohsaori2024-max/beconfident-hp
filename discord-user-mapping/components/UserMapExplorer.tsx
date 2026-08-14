@@ -1,41 +1,45 @@
 'use client';
 
 /**
- * ゆるかわ日本地図（天気予報風）。
- * `@svg-maps/japan` の実際の都道府県パスを使いつつ、丸い白縁取り＋ふんわり影で
- * デフォルメしたかわいい見た目に。各県に県名ラベルを表示し、登録者のいる県は
- * ブランドピンクでハイライト。ホバー／タップでポップアップ。
+ * デフォルメ日本地図（気象庁の全般季節予報区分風）。
+ * 都道府県を「まるいタイル」で日本の形に並べ、フルの県名を表示する。
+ * 登録者のいる県はブランドピンクでハイライト。ホバー／タップでポップアップ。
+ * 外部の地図APIは使わず、グリッド配置は自前で定義。
  */
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import japanMap from '@svg-maps/japan';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Profile } from '@/lib/types';
-import { SVG_ID_TO_CODE, prefectureName } from '@/lib/prefectures';
+import { PREFECTURES } from '@/lib/prefectures';
 import { PrefecturePopup } from './PrefecturePopup';
 
-interface Location {
-  id: string;
-  name: string;
-  path: string;
-}
+/** 都道府県コード → タイルの配置セル [列x(0=西), 行y(0=北)]。気象庁デフォルメ図に準拠。 */
+const TILE_LAYOUT: Readonly<Record<string, [number, number]>> = {
+  '01': [10, 0],
+  '02': [10, 1],
+  '05': [9, 2], '03': [10, 2],
+  '06': [9, 3], '04': [10, 3],
+  '07': [10, 4],
+  '17': [6, 5], '16': [7, 5], '15': [8, 5],
+  '18': [6, 6], '21': [7, 6], '20': [8, 6], '10': [9, 6], '09': [10, 6],
+  '25': [6, 7], '23': [7, 7], '19': [8, 7], '11': [9, 7], '08': [10, 7],
+  '29': [6, 8], '24': [7, 8], '13': [9, 8], '12': [10, 8],
+  '22': [8, 9], '14': [9, 9],
+  '26': [5, 6], '28': [4, 6], '31': [3, 6], '32': [2, 6],
+  '27': [5, 7], '33': [4, 7], '34': [3, 7], '35': [2, 7],
+  '30': [5, 8], '37': [4, 8], '38': [3, 8], '44': [2, 8], '40': [1, 8], '41': [0, 8],
+  '36': [4, 9], '39': [3, 9], '45': [2, 9], '43': [1, 9], '42': [0, 9],
+  '46': [1, 10],
+  '47': [0, 11],
+};
+
+const COLS = 11;
+const ROWS = 12;
 
 interface ActiveState {
   code: string;
-  xPct: number;
-  yPct: number;
+  x: number; // コンテナ左上からの px（タイル中央上端）
+  y: number;
   pinned: boolean;
-}
-
-const [VB_W, VB_H] = (() => {
-  const parts = japanMap.viewBox.split(' ').map(Number);
-  return [parts[2] || 438, parts[3] || 516];
-})();
-
-/** ラベル用の短い県名（都/道/府/県 を省略。北海道は例外）。 */
-function shortName(code: string): string {
-  const name = prefectureName(code) ?? '';
-  if (name === '北海道') return '北海道';
-  return name.replace(/[都道府県]$/, '');
 }
 
 export function UserMapExplorer({
@@ -43,31 +47,14 @@ export function UserMapExplorer({
 }: {
   profilesByPrefecture: Record<string, Profile[]>;
 }) {
-  const svgRef = useRef<SVGSVGElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<ActiveState | null>(null);
-  const [centers, setCenters] = useState<Record<string, { x: number; y: number }>>({});
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const locations = japanMap.locations as Location[];
-
-  const codeFor = useCallback((id: string): string | undefined => SVG_ID_TO_CODE[id], []);
   const hasUsers = useCallback(
-    (code: string | undefined) => !!code && (profilesByPrefecture[code]?.length ?? 0) > 0,
+    (code: string) => (profilesByPrefecture[code]?.length ?? 0) > 0,
     [profilesByPrefecture],
   );
-
-  // マウント後に各県パスの中心を計算（ラベル位置＆ポップアップ位置に使用）。
-  useLayoutEffect(() => {
-    if (!svgRef.current) return;
-    const next: Record<string, { x: number; y: number }> = {};
-    for (const path of Array.from(svgRef.current.querySelectorAll<SVGPathElement>('path[data-code]'))) {
-      const code = path.dataset.code;
-      if (!code) continue;
-      const box = path.getBBox();
-      next[code] = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
-    }
-    setCenters(next);
-  }, []);
 
   const clearCloseTimer = () => {
     if (closeTimer.current) {
@@ -81,30 +68,23 @@ export function UserMapExplorer({
   }, []);
   useEffect(() => () => clearCloseTimer(), []);
 
-  const openFor = useCallback(
-    (code: string, pinned: boolean) => {
-      clearCloseTimer();
-      const c = centers[code];
-      setActive({
-        code,
-        xPct: c ? (c.x / VB_W) * 100 : 50,
-        yPct: c ? (c.y / VB_H) * 100 : 50,
-        pinned,
-      });
-    },
-    [centers],
-  );
+  const openFor = useCallback((code: string, el: HTMLElement, pinned: boolean) => {
+    clearCloseTimer();
+    const cont = containerRef.current;
+    if (!cont) return;
+    const t = el.getBoundingClientRect();
+    const c = cont.getBoundingClientRect();
+    setActive({ code, x: t.left - c.left + t.width / 2, y: t.top - c.top, pinned });
+  }, []);
 
-  const handleEnter = (id: string) => {
-    const code = codeFor(id);
-    if (!code || !hasUsers(code) || active?.pinned) return;
-    openFor(code, false);
+  const handleEnter = (code: string, el: HTMLElement) => {
+    if (!hasUsers(code) || active?.pinned) return;
+    openFor(code, el, false);
   };
-  const handleClick = (id: string) => {
-    const code = codeFor(id);
-    if (!code || !hasUsers(code)) return;
+  const handleClick = (code: string, el: HTMLElement) => {
+    if (!hasUsers(code)) return;
     if (active?.code === code && active.pinned) setActive(null);
-    else openFor(code, true);
+    else openFor(code, el, true);
   };
 
   const filledCodes = useMemo(
@@ -113,74 +93,62 @@ export function UserMapExplorer({
   );
 
   const activeUsers = active ? profilesByPrefecture[active.code] ?? [] : [];
-  const popupBelow = active ? active.yPct < 28 : false;
+  const popupBelow = active ? active.y < 110 : false;
 
   return (
     <div
+      ref={containerRef}
       className="relative w-full select-none rounded-2xl bg-[#b9d6ec] p-3 ring-2 ring-[#10385f]/40"
       onMouseLeave={scheduleClose}
     >
-      <svg
-        ref={svgRef}
-        viewBox={japanMap.viewBox}
-        className="h-auto w-full overflow-visible"
-        role="img"
-        aria-label="日本地図：塾生のいる都道府県"
-        style={{ filter: 'drop-shadow(0 3px 3px rgba(16,56,95,0.28))' }}
-      >
-        {/* 県のパス（丸い白縁取り） */}
-        {locations.map((loc) => {
-          const code = codeFor(loc.id);
-          const filled = code ? filledCodes.has(code) : false;
-          const isActive = active?.code === code;
-          return (
-            <path
-              key={loc.id}
-              d={loc.path}
-              data-code={code}
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth={1.6}
-              className={[
-                'stroke-white transition-colors duration-150',
-                filled
-                  ? 'cursor-pointer fill-brand-pink hover:fill-brand-pink-dark'
-                  : 'fill-[#fdfbf7]',
-                isActive ? '!fill-brand-pink-dark' : '',
-              ].join(' ')}
-              onMouseEnter={() => handleEnter(loc.id)}
-              onClick={() => handleClick(loc.id)}
-            >
-              <title>{loc.name}</title>
-            </path>
-          );
-        })}
-
-        {/* 県名ラベル */}
-        {Object.entries(centers).map(([code, c]) => (
-          <text
-            key={`label-${code}`}
-            x={c.x}
-            y={c.y}
-            textAnchor="middle"
-            dominantBaseline="central"
-            className={`pointer-events-none font-bold ${
-              filledCodes.has(code) ? 'fill-white' : 'fill-[#10385f]/75'
-            }`}
-            style={{ fontSize: 6.5 }}
-          >
-            {shortName(code)}
-          </text>
-        ))}
-      </svg>
+      <div className="overflow-x-auto">
+        <div
+          className="mx-auto grid gap-1.5"
+          style={{
+            gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))`,
+            gridTemplateRows: `repeat(${ROWS}, minmax(0, 1fr))`,
+            minWidth: 520,
+            maxWidth: 600,
+          }}
+        >
+          {PREFECTURES.map((p) => {
+            const cell = TILE_LAYOUT[p.code];
+            if (!cell) return null;
+            const [x, y] = cell;
+            const filled = filledCodes.has(p.code);
+            const isActive = active?.code === p.code;
+            return (
+              <button
+                key={p.code}
+                type="button"
+                title={p.name}
+                aria-label={`${p.name}${filled ? `（${profilesByPrefecture[p.code].length}人）` : ''}`}
+                onMouseEnter={(e) => handleEnter(p.code, e.currentTarget)}
+                onFocus={(e) => handleEnter(p.code, e.currentTarget)}
+                onClick={(e) => handleClick(p.code, e.currentTarget)}
+                style={{ gridColumnStart: x + 1, gridRowStart: y + 1 }}
+                className={[
+                  'flex aspect-square items-center justify-center rounded-lg p-0.5 text-center text-[9px] font-bold leading-[1.1] shadow-sm transition-all sm:text-[10.5px]',
+                  filled
+                    ? 'z-[1] cursor-pointer bg-brand-pink text-white ring-1 ring-brand-pink-dark hover:bg-brand-pink-dark'
+                    : 'bg-white text-[#10385f]/80 ring-1 ring-[#10385f]/10',
+                  isActive ? 'z-[2] scale-110 !bg-brand-pink-dark ring-2 ring-white' : '',
+                ].join(' ')}
+              >
+                {p.name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       {/* ポップアップ */}
       {active && activeUsers.length > 0 && (
         <div
           className="absolute z-10"
           style={{
-            left: `${active.xPct}%`,
-            top: `${active.yPct}%`,
+            left: active.x,
+            top: active.y,
             transform: `translate(-50%, ${popupBelow ? '12px' : 'calc(-100% - 12px)'})`,
           }}
           onMouseEnter={clearCloseTimer}
