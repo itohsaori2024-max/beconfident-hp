@@ -122,7 +122,7 @@ export function UserMapExplorer({
 
   return (
     <div
-      className="relative w-full select-none rounded-xl bg-[#e7eff6] p-2 ring-2 ring-[#10385f]/40"
+      className="relative w-full select-none rounded-xl bg-[#b9d6ec] p-2 ring-2 ring-[#10385f]/40"
       onMouseLeave={scheduleClose}
     >
       <svg
