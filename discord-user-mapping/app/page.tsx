@@ -69,38 +69,42 @@ export default async function HomePage({
             <DiscordLoginButton />
           </div>
         ) : (
-          <div className="flex flex-wrap items-center gap-4">
-            {profile?.avatar_url && (
-              <Image
-                src={profile.avatar_url}
-                alt=""
-                width={48}
-                height={48}
-                className="rounded-full"
-              />
-            )}
-            <div className="min-w-0 flex-1">
-              <p className="font-semibold text-neutral-800">{session.displayName}</p>
-              <p className="text-xs text-neutral-500">
-                {profile?.prefecture_code
-                  ? `${prefectureName(profile.prefecture_code) ?? '不明'}${profile.generation ? ` ・ ${profile.generation}` : ''}`
-                  : '都道府県が未設定です'}
-              </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <div className="flex min-w-0 items-center gap-3">
+              {profile?.avatar_url && (
+                <Image
+                  src={profile.avatar_url}
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="shrink-0 rounded-full"
+                />
+              )}
+              <div className="min-w-0">
+                <p className="font-semibold text-neutral-800">{session.displayName}</p>
+                <p className="text-xs text-neutral-500">
+                  {profile?.prefecture_code
+                    ? `${prefectureName(profile.prefecture_code) ?? '不明'}${profile.generation ? ` ・ ${profile.generation}` : ''}`
+                    : '都道府県が未設定です'}
+                </p>
+              </div>
             </div>
-            <Link
-              href="/profile/setup"
-              className="rounded-md bg-brand-pink px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-pink-dark"
-            >
-              プロフィール編集
-            </Link>
-            <form action="/api/auth/logout" method="post">
-              <button
-                type="submit"
-                className="text-sm text-neutral-400 underline hover:text-neutral-600"
+            <div className="flex items-center gap-4 sm:ml-auto">
+              <Link
+                href="/profile/setup"
+                className="shrink-0 rounded-md bg-brand-pink px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-pink-dark"
               >
-                ログアウト
-              </button>
-            </form>
+                プロフィール編集
+              </Link>
+              <form action="/api/auth/logout" method="post">
+                <button
+                  type="submit"
+                  className="text-sm text-neutral-400 underline hover:text-neutral-600"
+                >
+                  ログアウト
+                </button>
+              </form>
+            </div>
           </div>
         )}
       </section>

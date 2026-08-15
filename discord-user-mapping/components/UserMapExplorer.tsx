@@ -1,17 +1,17 @@
 'use client';
 
 /**
- * 擬似3D・地方カラーの日本地図。
- * `@svg-maps/japan` の実形状パスを使い、地方ごとに色分け＋下方向に茶色い「厚み」を
- * 重ねて立体風に見せる（他社イラストの複製ではなくオリジナル実装）。
- * 登録者のいる県はブランドピンクでハイライト（地方色にはピンクを使わない）。
- * ホバー／タップでポップアップ。
+ * 擬似3Dの日本地図。
+ * `@svg-maps/japan` の実形状パスを使い、下方向に茶色い「厚み」を重ねて立体風に見せる
+ * （他社イラストの複製ではなくオリジナル実装）。
+ * 未登録県は薄いグレー、登録者のいる県はブランドピンク。ホバー／タップでポップアップ。
+ * スマホでも小さな県をタップしやすいよう、登録県には広い透明タップ領域を重ねている。
  */
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import japanMap from '@svg-maps/japan';
 import type { Profile } from '@/lib/types';
-import { SVG_ID_TO_CODE, prefectureName } from '@/lib/prefectures';
+import { SVG_ID_TO_CODE } from '@/lib/prefectures';
 import { PrefecturePopup } from './PrefecturePopup';
 
 interface Location {
@@ -31,30 +31,16 @@ const [VB_W, VB_H] = (() => {
   return [p[2] || 438, p[3] || 516];
 })();
 
-/** 地方カラー（ピンクは登録者専用のため使わない）。コードの並び順が地方順なので範囲で判定。 */
-function regionColor(code: string): string {
-  const n = parseInt(code, 10);
-  if (n === 1) return '#8fd3ab'; // 北海道（緑）
-  if (n <= 7) return '#f2cf87'; // 東北（黄）
-  if (n <= 14) return '#a7cbef'; // 関東（水色）
-  if (n <= 23) return '#c3e29a'; // 中部（黄緑）
-  if (n <= 30) return '#f2b277'; // 近畿（橙）
-  if (n <= 35) return '#90d5cb'; // 中国（青緑）
-  if (n <= 39) return '#b7a9e0'; // 四国（紫）
-  if (n <= 46) return '#7fc0e8'; // 九州（青）
-  return '#f4a15c'; // 沖縄（濃橙）
-}
-
-function shortName(code: string): string {
-  const name = prefectureName(code) ?? '';
-  return name === '北海道' ? name : name.replace(/[都道府県]$/, '');
-}
+const LAND_COLOR = '#dfe3e8'; // 未登録県：薄いグレー
+const PINK = '#e291a6';
+const PINK_DARK = '#d0798f';
 
 export function UserMapExplorer({
   profilesByPrefecture,
 }: {
   profilesByPrefecture: Record<string, Profile[]>;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const [active, setActive] = useState<ActiveState | null>(null);
   const [centers, setCenters] = useState<Record<string, { x: number; y: number }>>({});
@@ -85,9 +71,10 @@ export function UserMapExplorer({
       closeTimer.current = null;
     }
   };
+  // ホバーが外れたら閉じる（ただし固定表示中＝クリックで開いたものは閉じない）。
   const scheduleClose = useCallback(() => {
     clearCloseTimer();
-    closeTimer.current = setTimeout(() => setActive(null), 180);
+    closeTimer.current = setTimeout(() => setActive((a) => (a?.pinned ? a : null)), 180);
   }, []);
   useEffect(() => () => clearCloseTimer(), []);
 
@@ -105,27 +92,37 @@ export function UserMapExplorer({
     [centers],
   );
 
-  const handleEnter = (id: string) => {
-    const code = codeFor(id);
+  const enterCode = (code: string | undefined) => {
     if (!code || !hasUsers(code) || active?.pinned) return;
     openFor(code, false);
   };
-  const handleClick = (id: string) => {
-    const code = codeFor(id);
+  const clickCode = (code: string | undefined) => {
     if (!code || !hasUsers(code)) return;
     if (active?.code === code && active.pinned) setActive(null);
     else openFor(code, true);
   };
 
+  // 固定表示中に地図の外をタップ／クリックしたら閉じる（スマホ対応）。
+  useEffect(() => {
+    if (!active?.pinned) return;
+    const onDown = (e: PointerEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setActive(null);
+      }
+    };
+    document.addEventListener('pointerdown', onDown);
+    return () => document.removeEventListener('pointerdown', onDown);
+  }, [active?.pinned]);
+
   const filledCodes = useMemo(
-    () => new Set(Object.keys(profilesByPrefecture).filter((c) => profilesByPrefecture[c]?.length)),
+    () => Object.keys(profilesByPrefecture).filter((c) => profilesByPrefecture[c]?.length),
     [profilesByPrefecture],
   );
+  const filledSet = useMemo(() => new Set(filledCodes), [filledCodes]);
 
   const activeUsers = active ? profilesByPrefecture[active.code] ?? [] : [];
   const popupBelow = active ? active.yPct < 28 : false;
 
-  // 立体の「厚み」用オフセット（viewBox 単位）。奥から手前へ重ねる。
   const extrudeLayers = [
     { dx: 2.4, dy: 6.5, fill: '#7a4a28' },
     { dx: 1.2, dy: 3.2, fill: '#a56a3f' },
@@ -133,6 +130,7 @@ export function UserMapExplorer({
 
   return (
     <div
+      ref={containerRef}
       className="relative w-full select-none rounded-2xl bg-[#b9d6ec] p-3 ring-2 ring-[#10385f]/40"
       onMouseLeave={scheduleClose}
     >
@@ -153,12 +151,12 @@ export function UserMapExplorer({
           </g>
         ))}
 
-        {/* 天面（地方カラー／登録県はピンク） */}
+        {/* 天面（未登録＝薄グレー／登録＝ピンク） */}
         {locations.map((loc) => {
           const code = codeFor(loc.id);
-          const filled = code ? filledCodes.has(code) : false;
+          const filled = code ? filledSet.has(code) : false;
           const isActive = active?.code === code;
-          const fill = filled ? (isActive ? '#d0798f' : '#e291a6') : code ? regionColor(code) : '#dddddd';
+          const fill = filled ? (isActive ? PINK_DARK : PINK) : LAND_COLOR;
           return (
             <path
               key={loc.id}
@@ -170,29 +168,31 @@ export function UserMapExplorer({
               strokeLinejoin="round"
               strokeLinecap="round"
               className={filled ? 'cursor-pointer transition-colors' : 'transition-colors'}
-              onMouseEnter={() => handleEnter(loc.id)}
-              onClick={() => handleClick(loc.id)}
+              onMouseEnter={() => enterCode(code)}
+              onClick={() => clickCode(code)}
             >
               <title>{loc.name}</title>
             </path>
           );
         })}
 
-        {/* 県名ラベル */}
-        {Object.entries(centers).map(([code, c]) => (
-          <text
-            key={`label-${code}`}
-            x={c.x}
-            y={c.y}
-            textAnchor="middle"
-            dominantBaseline="central"
-            className="pointer-events-none font-bold"
-            fill={filledCodes.has(code) ? '#ffffff' : '#10385f'}
-            style={{ fontSize: 6 }}
-          >
-            {shortName(code)}
-          </text>
-        ))}
+        {/* 登録県の広い透明タップ領域（スマホで小さい県も押しやすく） */}
+        {filledCodes.map((code) => {
+          const c = centers[code];
+          if (!c) return null;
+          return (
+            <circle
+              key={`hit-${code}`}
+              cx={c.x}
+              cy={c.y}
+              r={13}
+              fill="transparent"
+              className="cursor-pointer"
+              onMouseEnter={() => enterCode(code)}
+              onClick={() => clickCode(code)}
+            />
+          );
+        })}
       </svg>
 
       {/* ポップアップ */}
