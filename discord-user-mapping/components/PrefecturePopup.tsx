@@ -123,7 +123,7 @@ export function PrefecturePopup({
   users: Profile[];
 }) {
   return (
-    <div className="w-72 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl ring-1 ring-black/5">
+    <div className="w-full overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl ring-1 ring-black/5 sm:w-72">
       <div className="flex items-center justify-between border-b border-neutral-100 bg-brand-pink px-4 py-2.5">
         <h3 className="font-bold text-white">{prefectureName(prefectureCode) ?? '不明'}</h3>
         <span className="rounded-full bg-white/25 px-2 py-0.5 text-xs font-semibold text-white">

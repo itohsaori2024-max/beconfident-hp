@@ -185,8 +185,9 @@ export function UserMapExplorer({
               key={`hit-${code}`}
               cx={c.x}
               cy={c.y}
-              r={13}
+              r={24}
               fill="transparent"
+              pointerEvents="all"
               className="cursor-pointer"
               onMouseEnter={() => enterCode(code)}
               onClick={() => clickCode(code)}
@@ -197,18 +198,22 @@ export function UserMapExplorer({
 
       {/* ポップアップ */}
       {active && activeUsers.length > 0 && (
-        <div
-          className="absolute z-10"
-          style={{
-            left: `${active.xPct}%`,
-            top: `${active.yPct}%`,
-            transform: `translate(-50%, ${popupBelow ? '12px' : 'calc(-100% - 12px)'})`,
-          }}
-          onMouseEnter={clearCloseTimer}
-          onMouseLeave={scheduleClose}
-        >
-          <PrefecturePopup prefectureCode={active.code} users={activeUsers} />
-        </div>
+        <>
+          {/* スマホ用の背景（タップで閉じる） */}
+          <div className="fixed inset-0 z-10 bg-black/25 sm:hidden" onClick={() => setActive(null)} />
+          <div
+            className="absolute z-20 max-sm:!fixed max-sm:!inset-x-3 max-sm:!bottom-3 max-sm:!top-auto max-sm:!transform-none"
+            style={{
+              left: `${active.xPct}%`,
+              top: `${active.yPct}%`,
+              transform: `translate(-50%, ${popupBelow ? '12px' : 'calc(-100% - 12px)'})`,
+            }}
+            onMouseEnter={clearCloseTimer}
+            onMouseLeave={scheduleClose}
+          >
+            <PrefecturePopup prefectureCode={active.code} users={activeUsers} />
+          </div>
+        </>
       )}
     </div>
   );
