@@ -96,6 +96,8 @@ export async function updateProfileDetails(
       business_type: details.business_type,
       instagram_url: details.instagram_url,
       threads_url: details.threads_url,
+      is_overseas: details.is_overseas,
+      overseas_label: details.overseas_label,
       updated_at: new Date().toISOString(),
     })
     .eq('discord_id', discordId)
@@ -107,6 +109,23 @@ export async function updateProfileDetails(
   }
 
   return data as Profile;
+}
+
+/** 海外・その他（都道府県以外）のプロフィールを取得する。 */
+export async function getOverseasProfiles(): Promise<Profile[]> {
+  const supabase = getSupabaseAdmin();
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('is_overseas', true)
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    throw new Error(`海外プロフィールの取得に失敗しました: ${error.message}`);
+  }
+
+  return (data ?? []) as Profile[];
 }
 
 /**

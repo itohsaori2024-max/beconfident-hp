@@ -61,6 +61,9 @@ export const PREFECTURES: readonly Prefecture[] = [
   { code: '47', name: '沖縄県' },
 ] as const;
 
+/** 「海外・その他」を表すセレクトの値（都道府県コードではない特別値）。 */
+export const OVERSEAS_VALUE = 'overseas';
+
 /** 与えられた文字列が有効な都道府県コードかどうかを判定する。 */
 export function isValidPrefectureCode(code: unknown): code is string {
   return typeof code === 'string' && PREFECTURES.some((p) => p.code === code);

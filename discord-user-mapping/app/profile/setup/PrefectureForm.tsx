@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { PREFECTURES } from '@/lib/prefectures';
+import { PREFECTURES, OVERSEAS_VALUE } from '@/lib/prefectures';
 import type { Profile } from '@/lib/types';
 import { saveProfileDetails, type SetupFormState } from './actions';
 
@@ -25,18 +26,23 @@ const fieldClass =
 
 export function PrefectureForm({ profile }: { profile: Profile | null }) {
   const [state, formAction] = useFormState(saveProfileDetails, initialState);
+  const [location, setLocation] = useState<string>(
+    profile?.is_overseas ? OVERSEAS_VALUE : profile?.prefecture_code ?? '',
+  );
+  const isOverseas = location === OVERSEAS_VALUE;
 
   return (
     <form action={formAction} className="w-full space-y-4">
-      {/* 都道府県（必須） */}
+      {/* 居住地：都道府県 or 海外（必須） */}
       <div>
         <label htmlFor="prefecture_code" className="mb-1 block text-sm font-medium">
-          都道府県 <span className="text-red-400">*必須</span>
+          お住まい <span className="text-red-400">*必須</span>
         </label>
         <select
           id="prefecture_code"
           name="prefecture_code"
-          defaultValue={profile?.prefecture_code ?? ''}
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
           required
           className={fieldClass}
         >
@@ -48,8 +54,27 @@ export function PrefectureForm({ profile }: { profile: Profile | null }) {
               {p.name}
             </option>
           ))}
+          <option value={OVERSEAS_VALUE}>海外・その他</option>
         </select>
       </div>
+
+      {/* 国・地域名（海外を選んだ場合のみ・任意） */}
+      {isOverseas && (
+        <div>
+          <label htmlFor="overseas_label" className="mb-1 block text-sm font-medium">
+            国・地域名 <span className="text-neutral-400">（任意）</span>
+          </label>
+          <input
+            id="overseas_label"
+            name="overseas_label"
+            type="text"
+            defaultValue={profile?.overseas_label ?? ''}
+            placeholder="例: アメリカ / USA"
+            maxLength={50}
+            className={fieldClass}
+          />
+        </div>
+      )}
 
       {/* 期生（必須） */}
       <div>

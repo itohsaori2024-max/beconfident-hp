@@ -24,6 +24,10 @@ export interface Profile {
   instagram_url: string | null;
   /** 任意項目：Threads の URL */
   threads_url: string | null;
+  /** 海外・その他（都道府県以外）かどうか。true のとき prefecture_code は null。 */
+  is_overseas: boolean;
+  /** 任意：国・地域名（例「アメリカ」）。海外の場合のみ使用。 */
+  overseas_label: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -39,11 +43,14 @@ export interface ProfileUpsertInput {
 
 /** プロフィール設定画面（/profile/setup）で保存する入力。 */
 export interface ProfileDetailsInput {
-  prefecture_code: string;
+  /** 国内の場合は都道府県コード。海外の場合は null。 */
+  prefecture_code: string | null;
   generation: string;
   business_type: string;
   instagram_url: string | null;
   threads_url: string | null;
+  is_overseas: boolean;
+  overseas_label: string | null;
 }
 
 /** セッション Cookie に格納する最小限のユーザー情報。 */

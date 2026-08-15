@@ -1,17 +1,16 @@
 'use client';
 
 /**
- * 擬似3Dの日本地図。
- * `@svg-maps/japan` の実形状パスを使い、下方向に茶色い「厚み」を重ねて立体風に見せる
- * （他社イラストの複製ではなくオリジナル実装）。
- * 未登録県は薄いグレー、登録者のいる県はブランドピンク。ホバー／タップでポップアップ。
- * スマホでも小さな県をタップしやすいよう、登録県には広い透明タップ領域を重ねている。
+ * 擬似3Dの日本地図＋海外用の地球儀。
+ * `@svg-maps/japan` の実形状パスに、ブランドネイビー(#10385f)の「厚み」を重ねて立体風に。
+ * 未登録県は薄グレー、登録県はブランドピンク。右上の地球儀に海外ユーザーをまとめて表示。
+ * ホバー／タップでポップアップ（スマホはピンチ拡大時も一定サイズを維持）。
  */
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import japanMap from '@svg-maps/japan';
 import type { Profile } from '@/lib/types';
-import { SVG_ID_TO_CODE } from '@/lib/prefectures';
+import { SVG_ID_TO_CODE, prefectureName } from '@/lib/prefectures';
 import { PrefecturePopup } from './PrefecturePopup';
 
 interface Location {
@@ -19,10 +18,14 @@ interface Location {
   name: string;
   path: string;
 }
-interface ActiveState {
-  code: string;
-  xPct: number;
-  yPct: number;
+
+interface Popup {
+  users: Profile[];
+  title: string;
+  /** 都道府県ハイライト用（海外グループの場合は undefined）。 */
+  prefCode?: string;
+  /** 表示アンカー：地図上の割合位置、または右上の地球儀。 */
+  anchor: { xPct: number; yPct: number } | 'globe';
   pinned: boolean;
 }
 
@@ -31,19 +34,22 @@ const [VB_W, VB_H] = (() => {
   return [p[2] || 438, p[3] || 516];
 })();
 
-const LAND_COLOR = '#dfe3e8'; // 未登録県：薄いグレー
+const LAND_COLOR = '#dfe3e8';
 const PINK = '#e291a6';
 const PINK_DARK = '#d0798f';
+const NAVY = '#10385f';
 
 export function UserMapExplorer({
   profilesByPrefecture,
+  overseasUsers = [],
 }: {
   profilesByPrefecture: Record<string, Profile[]>;
+  overseasUsers?: Profile[];
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const vpRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState<ActiveState | null>(null);
+  const [popup, setPopup] = useState<Popup | null>(null);
   const [centers, setCenters] = useState<Record<string, { x: number; y: number }>>({});
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -72,41 +78,49 @@ export function UserMapExplorer({
       closeTimer.current = null;
     }
   };
-  // ホバーが外れたら閉じる（ただし固定表示中＝クリックで開いたものは閉じない）。
   const scheduleClose = useCallback(() => {
     clearCloseTimer();
-    closeTimer.current = setTimeout(() => setActive((a) => (a?.pinned ? a : null)), 180);
+    closeTimer.current = setTimeout(() => setPopup((p) => (p?.pinned ? p : null)), 180);
   }, []);
   useEffect(() => () => clearCloseTimer(), []);
 
-  const openFor = useCallback(
+  const openPref = useCallback(
     (code: string, pinned: boolean) => {
       clearCloseTimer();
       const c = centers[code];
-      setActive({
-        code,
-        xPct: c ? (c.x / VB_W) * 100 : 50,
-        yPct: c ? (c.y / VB_H) * 100 : 50,
+      setPopup({
+        users: profilesByPrefecture[code] ?? [],
+        title: prefectureName(code) ?? '不明',
+        prefCode: code,
+        anchor: { xPct: c ? (c.x / VB_W) * 100 : 50, yPct: c ? (c.y / VB_H) * 100 : 50 },
         pinned,
       });
     },
-    [centers],
+    [centers, profilesByPrefecture],
   );
 
-  const enterCode = (code: string | undefined) => {
-    if (!code || !hasUsers(code) || active?.pinned) return;
-    openFor(code, false);
+  const openOverseas = useCallback(
+    (pinned: boolean) => {
+      clearCloseTimer();
+      setPopup({ users: overseasUsers, title: '海外・その他', anchor: 'globe', pinned });
+    },
+    [overseasUsers],
+  );
+
+  const enterPref = (code: string | undefined) => {
+    if (!code || !hasUsers(code) || popup?.pinned) return;
+    openPref(code, false);
   };
-  const clickCode = (code: string | undefined) => {
+  const clickPref = (code: string | undefined) => {
     if (!code || !hasUsers(code)) return;
-    if (active?.code === code && active.pinned) setActive(null);
-    else openFor(code, true);
+    if (popup?.prefCode === code && popup.pinned) setPopup(null);
+    else openPref(code, true);
   };
 
-  // スマホのピンチ拡大時もカードを一定サイズ・見える範囲に保つ（Visual Viewport 追従）。
+  // スマホのピンチ拡大時もカードを一定サイズ・見える範囲に保つ。
   useEffect(() => {
     const vv = typeof window !== 'undefined' ? window.visualViewport : null;
-    if (!active || !vv) return;
+    if (!popup || !vv) return;
     const update = () => {
       const el = vpRef.current;
       if (!el) return;
@@ -121,19 +135,19 @@ export function UserMapExplorer({
       vv.removeEventListener('resize', update);
       vv.removeEventListener('scroll', update);
     };
-  }, [active]);
+  }, [popup]);
 
-  // 固定表示中に地図の外をタップ／クリックしたら閉じる（スマホ対応）。
+  // 固定表示中に外側をタップ／クリックしたら閉じる。
   useEffect(() => {
-    if (!active?.pinned) return;
+    if (!popup?.pinned) return;
     const onDown = (e: PointerEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setActive(null);
+        setPopup(null);
       }
     };
     document.addEventListener('pointerdown', onDown);
     return () => document.removeEventListener('pointerdown', onDown);
-  }, [active?.pinned]);
+  }, [popup?.pinned]);
 
   const filledCodes = useMemo(
     () => Object.keys(profilesByPrefecture).filter((c) => profilesByPrefecture[c]?.length),
@@ -141,13 +155,15 @@ export function UserMapExplorer({
   );
   const filledSet = useMemo(() => new Set(filledCodes), [filledCodes]);
 
-  const activeUsers = active ? profilesByPrefecture[active.code] ?? [] : [];
-  const popupBelow = active ? active.yPct < 28 : false;
-
+  const hasOverseas = overseasUsers.length > 0;
   const extrudeLayers = [
-    { dx: 2.4, dy: 6.5, fill: '#7a4a28' },
-    { dx: 1.2, dy: 3.2, fill: '#a56a3f' },
+    { dx: 2.4, dy: 6.5, fill: NAVY },
+    { dx: 1.2, dy: 3.2, fill: '#24567f' },
   ];
+
+  const isGlobe = popup?.anchor === 'globe';
+  const coordAnchor = popup && popup.anchor !== 'globe' ? popup.anchor : null;
+  const popupBelow = coordAnchor ? coordAnchor.yPct < 28 : true;
 
   return (
     <div
@@ -155,15 +171,43 @@ export function UserMapExplorer({
       className="relative w-full select-none rounded-2xl bg-[#b9d6ec] p-3 ring-2 ring-[#10385f]/40"
       onMouseLeave={scheduleClose}
     >
+      {/* 右上：海外用の地球儀 */}
+      <button
+        type="button"
+        title="海外・その他のメンバー"
+        aria-label={`海外・その他のメンバー（${overseasUsers.length}人）`}
+        onMouseEnter={() => hasOverseas && !popup?.pinned && openOverseas(false)}
+        onFocus={() => hasOverseas && !popup?.pinned && openOverseas(false)}
+        onClick={() => {
+          if (!hasOverseas) return;
+          if (isGlobe && popup?.pinned) setPopup(null);
+          else openOverseas(true);
+        }}
+        className={[
+          'absolute right-3 top-3 z-[5] flex h-11 w-11 items-center justify-center rounded-full border-2 bg-white shadow-md transition-transform',
+          hasOverseas ? 'cursor-pointer border-brand-pink hover:scale-105' : 'cursor-default border-neutral-200 opacity-70',
+        ].join(' ')}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={hasOverseas ? PINK_DARK : '#94a3b8'} strokeWidth="1.7">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18" />
+          <path d="M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3z" />
+        </svg>
+        {hasOverseas && (
+          <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand-pink px-1 text-[10px] font-bold text-white">
+            {overseasUsers.length}
+          </span>
+        )}
+      </button>
+
       <svg
         ref={svgRef}
         viewBox={japanMap.viewBox}
         className="h-auto w-full overflow-visible"
         role="img"
         aria-label="日本地図：塾生のいる都道府県"
-        style={{ filter: 'drop-shadow(0 4px 4px rgba(16,56,95,0.30))' }}
+        style={{ filter: 'drop-shadow(0 4px 4px rgba(16,56,95,0.35))' }}
       >
-        {/* 立体の厚み（茶色いフチ） */}
         {extrudeLayers.map((layer, i) => (
           <g key={`ex-${i}`} transform={`translate(${layer.dx}, ${layer.dy})`} className="pointer-events-none">
             {locations.map((loc) => (
@@ -172,11 +216,10 @@ export function UserMapExplorer({
           </g>
         ))}
 
-        {/* 天面（未登録＝薄グレー／登録＝ピンク） */}
         {locations.map((loc) => {
           const code = codeFor(loc.id);
           const filled = code ? filledSet.has(code) : false;
-          const isActive = active?.code === code;
+          const isActive = popup?.prefCode === code;
           const fill = filled ? (isActive ? PINK_DARK : PINK) : LAND_COLOR;
           return (
             <path
@@ -189,15 +232,14 @@ export function UserMapExplorer({
               strokeLinejoin="round"
               strokeLinecap="round"
               className={filled ? 'cursor-pointer transition-colors' : 'transition-colors'}
-              onMouseEnter={() => enterCode(code)}
-              onClick={() => clickCode(code)}
+              onMouseEnter={() => enterPref(code)}
+              onClick={() => clickPref(code)}
             >
               <title>{loc.name}</title>
             </path>
           );
         })}
 
-        {/* 登録県の広い透明タップ領域（スマホで小さい県も押しやすく） */}
         {filledCodes.map((code) => {
           const c = centers[code];
           if (!c) return null;
@@ -210,18 +252,18 @@ export function UserMapExplorer({
               fill="transparent"
               pointerEvents="all"
               className="cursor-pointer"
-              onMouseEnter={() => enterCode(code)}
-              onClick={() => clickCode(code)}
+              onMouseEnter={() => enterPref(code)}
+              onClick={() => clickPref(code)}
             />
           );
         })}
       </svg>
 
       {/* ポップアップ */}
-      {active && activeUsers.length > 0 && (
+      {popup && popup.users.length > 0 && (
         <>
           {/* スマホ：背景（タップで閉じる） */}
-          <div className="fixed inset-0 z-10 bg-black/25 sm:hidden" onClick={() => setActive(null)} />
+          <div className="fixed inset-0 z-10 bg-black/25 sm:hidden" onClick={() => setPopup(null)} />
 
           {/* スマホ：見える範囲に追従する固定サイズのカード */}
           <div
@@ -230,22 +272,26 @@ export function UserMapExplorer({
             style={{ width: '100vw', height: '100vh', pointerEvents: 'none' }}
           >
             <div className="pointer-events-auto absolute inset-x-3 bottom-3">
-              <PrefecturePopup prefectureCode={active.code} users={activeUsers} />
+              <PrefecturePopup prefectureCode={popup.prefCode} title={popup.title} users={popup.users} />
             </div>
           </div>
 
-          {/* PC：県の近くにフロート表示 */}
+          {/* PC：県付近／地球儀付近にフロート表示 */}
           <div
             className="absolute z-20 hidden sm:block"
-            style={{
-              left: `${active.xPct}%`,
-              top: `${active.yPct}%`,
-              transform: `translate(-50%, ${popupBelow ? '12px' : 'calc(-100% - 12px)'})`,
-            }}
+            style={
+              isGlobe
+                ? { right: 12, top: 56 }
+                : {
+                    left: `${coordAnchor!.xPct}%`,
+                    top: `${coordAnchor!.yPct}%`,
+                    transform: `translate(-50%, ${popupBelow ? '12px' : 'calc(-100% - 12px)'})`,
+                  }
+            }
             onMouseEnter={clearCloseTimer}
             onMouseLeave={scheduleClose}
           >
-            <PrefecturePopup prefectureCode={active.code} users={activeUsers} />
+            <PrefecturePopup prefectureCode={popup.prefCode} title={popup.title} users={popup.users} />
           </div>
         </>
       )}

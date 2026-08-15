@@ -9,7 +9,7 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/session';
 import { updateProfileDetails } from '@/lib/supabase';
-import { isValidPrefectureCode } from '@/lib/prefectures';
+import { isValidPrefectureCode, OVERSEAS_VALUE } from '@/lib/prefectures';
 
 export interface SetupFormState {
   error?: string;
@@ -45,13 +45,14 @@ export async function saveProfileDetails(
     redirect('/?error=not_authenticated');
   }
 
-  const prefectureCode = formData.get('prefecture_code');
+  const locationValue = formData.get('prefecture_code');
   const generation = (formData.get('generation') as string | null)?.trim() ?? '';
   const businessType = (formData.get('business_type') as string | null)?.trim() ?? '';
+  const isOverseas = locationValue === OVERSEAS_VALUE;
 
-  // --- 必須バリデーション ---
-  if (!isValidPrefectureCode(prefectureCode)) {
-    return { error: '都道府県を選択してください。' };
+  // --- 必須バリデーション（居住地：都道府県 or 海外） ---
+  if (!isOverseas && !isValidPrefectureCode(locationValue)) {
+    return { error: '都道府県（または海外）を選択してください。' };
   }
   if (generation === '') {
     return { error: '期生を入力してください。' };
@@ -70,12 +71,16 @@ export async function saveProfileDetails(
     return { error: e instanceof Error ? e.message : 'URL の形式が正しくありません。' };
   }
 
+  const overseasLabel = normalizeOptional(formData.get('overseas_label'));
+
   await updateProfileDetails(session.discordId, {
-    prefecture_code: prefectureCode,
+    prefecture_code: isOverseas ? null : (locationValue as string),
     generation,
     business_type: businessType,
     instagram_url: instagramUrl,
     threads_url: threadsUrl,
+    is_overseas: isOverseas,
+    overseas_label: isOverseas ? overseasLabel : null,
   });
 
   redirect('/');

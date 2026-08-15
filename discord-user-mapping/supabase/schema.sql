@@ -35,6 +35,9 @@ create table if not exists public.profiles (
   -- 任意項目（SNS リンク）
   instagram_url    text check (instagram_url is null or instagram_url ~ '^https?://'),
   threads_url      text check (threads_url  is null or threads_url  ~ '^https?://'),
+  -- 海外・その他（都道府県以外）。海外ユーザーは prefecture_code = null。
+  is_overseas      boolean not null default false,
+  overseas_label   text,
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
 );

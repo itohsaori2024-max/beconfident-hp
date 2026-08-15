@@ -1,7 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getSession } from '@/lib/session';
-import { getProfileByDiscordId, getProfilesGroupedByPrefecture } from '@/lib/supabase';
+import {
+  getProfileByDiscordId,
+  getProfilesGroupedByPrefecture,
+  getOverseasProfiles,
+} from '@/lib/supabase';
 import type { Profile } from '@/lib/types';
 import { prefectureName } from '@/lib/prefectures';
 import { DiscordLoginButton } from '@/components/DiscordLoginButton';
@@ -25,7 +29,7 @@ export default async function HomePage({
 }) {
   const session = getSession();
   // DB 取得に失敗してもページ全体をクラッシュさせず、ログイン等は表示できるようにする。
-  const [profile, profilesByPrefecture] = await Promise.all([
+  const [profile, profilesByPrefecture, overseasUsers] = await Promise.all([
     session
       ? getProfileByDiscordId(session.discordId).catch((e) => {
           console.error('[home] プロフィール取得に失敗:', e);
@@ -36,13 +40,18 @@ export default async function HomePage({
       console.error('[home] プロフィール一覧の取得に失敗:', e);
       return {} as Record<string, Profile[]>;
     }),
+    getOverseasProfiles().catch((e) => {
+      console.error('[home] 海外プロフィールの取得に失敗:', e);
+      return [] as Profile[];
+    }),
   ]);
 
   const errorMessage = searchParams.error
     ? ERROR_MESSAGES[searchParams.error] ?? '不明なエラーが発生しました。'
     : null;
 
-  const totalUsers = Object.values(profilesByPrefecture).reduce((n, list) => n + list.length, 0);
+  const totalUsers =
+    Object.values(profilesByPrefecture).reduce((n, list) => n + list.length, 0) + overseasUsers.length;
 
   return (
     <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-4 py-8">
@@ -114,10 +123,10 @@ export default async function HomePage({
         <div className="mb-3 flex items-center justify-end">
           <p className="flex items-center gap-1.5 text-xs text-neutral-500">
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-brand-pink" />
-            塾生のいる都道府県（ホバー／タップで表示）
+            塾生のいる都道府県（右上の地球儀は海外）
           </p>
         </div>
-        <UserMapExplorer profilesByPrefecture={profilesByPrefecture} />
+        <UserMapExplorer profilesByPrefecture={profilesByPrefecture} overseasUsers={overseasUsers} />
       </section>
     </main>
   );

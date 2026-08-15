@@ -105,6 +105,12 @@ function UserCard({ profile }: { profile: Profile }) {
               {profile.generation}
             </span>
           )}
+          {/* 海外ラベル */}
+          {profile.is_overseas && profile.overseas_label && (
+            <span className="shrink-0 rounded-full bg-[#10385f]/10 px-2 py-0.5 text-[11px] font-semibold text-[#10385f]">
+              {profile.overseas_label}
+            </span>
+          )}
         </div>
         {profile.business_type && (
           <p className="mt-0.5 truncate text-sm text-neutral-500">{profile.business_type}</p>
@@ -118,14 +124,19 @@ function UserCard({ profile }: { profile: Profile }) {
 export function PrefecturePopup({
   prefectureCode,
   users,
+  title,
 }: {
-  prefectureCode: string;
+  /** 都道府県コード（海外グループの場合は省略し title を使う）。 */
+  prefectureCode?: string;
   users: Profile[];
+  /** 見出し。未指定なら都道府県名を使う。 */
+  title?: string;
 }) {
+  const heading = title ?? (prefectureCode ? prefectureName(prefectureCode) ?? '不明' : '不明');
   return (
     <div className="w-full overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl ring-1 ring-black/5 sm:w-72">
       <div className="flex items-center justify-between border-b border-neutral-100 bg-brand-pink px-4 py-2.5">
-        <h3 className="font-bold text-white">{prefectureName(prefectureCode) ?? '不明'}</h3>
+        <h3 className="font-bold text-white">{heading}</h3>
         <span className="rounded-full bg-white/25 px-2 py-0.5 text-xs font-semibold text-white">
           {users.length}人
         </span>
