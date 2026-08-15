@@ -184,7 +184,7 @@ export function UserMapExplorer({
           else openOverseas(true);
         }}
         className={[
-          'absolute right-3 top-3 z-[5] flex h-11 w-11 items-center justify-center rounded-full border-2 bg-white shadow-md transition-transform',
+          'absolute left-3 top-3 z-[5] flex h-11 w-11 items-center justify-center rounded-full border-2 bg-white shadow-md transition-transform',
           hasOverseas ? 'cursor-pointer border-brand-pink hover:scale-105' : 'cursor-default border-neutral-200 opacity-70',
         ].join(' ')}
       >
@@ -281,7 +281,7 @@ export function UserMapExplorer({
             className="absolute z-20 hidden sm:block"
             style={
               isGlobe
-                ? { right: 12, top: 56 }
+                ? { left: 12, top: 56 }
                 : {
                     left: `${coordAnchor!.xPct}%`,
                     top: `${coordAnchor!.yPct}%`,
