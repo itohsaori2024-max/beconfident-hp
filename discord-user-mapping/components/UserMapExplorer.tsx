@@ -243,12 +243,22 @@ export function UserMapExplorer({
         {filledCodes.map((code) => {
           const c = centers[code];
           if (!c) return null;
+          // 隣接する登録県とタップ範囲が重ならないよう、最も近い登録県までの距離から半径を決める。
+          let minD = Infinity;
+          for (const other of filledCodes) {
+            if (other === code) continue;
+            const oc = centers[other];
+            if (!oc) continue;
+            const d = Math.hypot(oc.x - c.x, oc.y - c.y);
+            if (d < minD) minD = d;
+          }
+          const r = Math.max(5, Math.min(22, minD / 2 - 1));
           return (
             <circle
               key={`hit-${code}`}
               cx={c.x}
               cy={c.y}
-              r={24}
+              r={r}
               fill="transparent"
               pointerEvents="all"
               className="cursor-pointer"
