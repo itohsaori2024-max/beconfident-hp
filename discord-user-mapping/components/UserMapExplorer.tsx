@@ -61,14 +61,52 @@ export function UserMapExplorer({
   );
 
   useLayoutEffect(() => {
-    if (!svgRef.current) return;
+    const svg = svgRef.current;
+    if (!svg) return;
+    const pt = svg.createSVGPoint();
     const next: Record<string, { x: number; y: number }> = {};
-    for (const path of Array.from(svgRef.current.querySelectorAll<SVGPathElement>('path[data-code]'))) {
+
+    for (const path of Array.from(svg.querySelectorAll<SVGPathElement>('path[data-code]'))) {
       const code = path.dataset.code;
       if (!code) continue;
       const b = path.getBBox();
-      next[code] = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
+
+      // 図形内部の点をグリッドでサンプリング（外接矩形の中央は東京の島などで海上になるため）。
+      const cols = 16;
+      const rows = 16;
+      const inside: { x: number; y: number }[] = [];
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const x = b.x + (b.width * (i + 0.5)) / cols;
+          const y = b.y + (b.height * (j + 0.5)) / rows;
+          pt.x = x;
+          pt.y = y;
+          if (path.isPointInFill(pt)) inside.push({ x, y });
+        }
+      }
+
+      if (inside.length === 0) {
+        next[code] = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
+        continue;
+      }
+
+      // 内部点が最も密集している場所（＝本土などの最大の塊）の点を代表点に選ぶ。
+      const rad = Math.max(b.width, b.height) / 6;
+      let best = inside[0];
+      let bestCount = -1;
+      for (const p of inside) {
+        let cnt = 0;
+        for (const q of inside) {
+          if (Math.hypot(p.x - q.x, p.y - q.y) <= rad) cnt++;
+        }
+        if (cnt > bestCount) {
+          bestCount = cnt;
+          best = p;
+        }
+      }
+      next[code] = best;
     }
+
     setCenters(next);
   }, []);
 
