@@ -2,6 +2,7 @@
 
 <!-- Vercel: Next.js / Root Directory = discord-user-mapping -->
 <!-- NEXT_PUBLIC_SUPABASE_URL はベースURL（末尾に /rest/v1 を付けない）-->
+<!-- DISCORD_GUILD_ID を設定すると塾サーバーのメンバー限定になる -->
 
 Discord 内で動作するユーザーマッピングアプリ。
 **第一歩**として、Discord OAuth2 でログインし、ユーザーの Discord 名とアイコン画像を取得して、
