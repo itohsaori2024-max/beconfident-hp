@@ -14,6 +14,7 @@ import { cookies } from 'next/headers';
 import {
   exchangeCodeForToken,
   fetchDiscordUser,
+  fetchUserGuilds,
   buildAvatarUrl,
   resolveDisplayName,
 } from '@/lib/discord';
@@ -52,6 +53,16 @@ export async function GET(request: NextRequest) {
     // --- トークン交換 → ユーザー取得 ---
     const token = await exchangeCodeForToken(code);
     const discordUser = await fetchDiscordUser(token.access_token);
+
+    // --- 塾サーバーのメンバーか確認（DISCORD_GUILD_ID 設定時のみ） ---
+    const guildId = serverEnv.discordGuildId;
+    if (guildId) {
+      const guilds = await fetchUserGuilds(token.access_token);
+      const isMember = guilds.some((g) => g.id === guildId);
+      if (!isMember) {
+        return NextResponse.redirect(`${appUrl}/?error=not_member`);
+      }
+    }
 
     const displayName = resolveDisplayName(discordUser);
     const avatarUrl = buildAvatarUrl(discordUser);

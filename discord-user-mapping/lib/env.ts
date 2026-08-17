@@ -54,6 +54,10 @@ export const serverEnv = {
   get sessionSecret() {
     return required('SESSION_SECRET', process.env.SESSION_SECRET);
   },
+  /** 塾の Discord サーバー（guild）ID。設定時のみメンバー制限を有効にする。 */
+  get discordGuildId() {
+    return clean(process.env.DISCORD_GUILD_ID) ?? '';
+  },
   get appUrl() {
     return cleanUrl(process.env.NEXT_PUBLIC_APP_URL) ?? 'http://localhost:3000';
   },

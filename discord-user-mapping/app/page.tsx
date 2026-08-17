@@ -20,6 +20,8 @@ const ERROR_MESSAGES: Record<string, string> = {
   missing_code_or_state: '認証情報が不足しています。もう一度お試しください。',
   not_authenticated: 'ログインが必要です。',
   access_denied: 'ログインがキャンセルされました。',
+  not_member:
+    'この地図はさおり塾メンバー専用です。塾の Discord サーバーに参加した状態でログインしてください。',
 };
 
 export default async function HomePage({

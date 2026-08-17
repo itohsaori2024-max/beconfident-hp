@@ -8,8 +8,12 @@ import { serverEnv } from './env';
 
 const DISCORD_API_BASE = 'https://discord.com/api/v10';
 
-/** OAuth2 で要求するスコープ。identify でユーザー名・アイコンを取得できる。 */
-export const DISCORD_SCOPES = ['identify'] as const;
+/**
+ * OAuth2 で要求するスコープ。
+ * - identify: ユーザー名・アイコンを取得
+ * - guilds: 参加サーバー一覧を取得（塾サーバーのメンバーか確認するため）
+ */
+export const DISCORD_SCOPES = ['identify', 'guilds'] as const;
 
 /**
  * Discord の認可画面へのURLを生成する。
@@ -22,8 +26,6 @@ export function buildAuthorizeUrl(state: string): string {
     response_type: 'code',
     scope: DISCORD_SCOPES.join(' '),
     state,
-    // 毎回同意画面を表示せず、既存の認可があれば省略する
-    prompt: 'none',
   });
   return `https://discord.com/oauth2/authorize?${params.toString()}`;
 }
@@ -114,4 +116,25 @@ export function buildAvatarUrl(user: DiscordUser, size = 256): string {
 /** 表示に使う名前を決める（global_name を優先、なければ username）。 */
 export function resolveDisplayName(user: DiscordUser): string {
   return user.global_name?.trim() || user.username;
+}
+
+/** Discord API が返す参加サーバー（guild）の抜粋。 */
+export interface DiscordGuild {
+  id: string;
+  name: string;
+}
+
+/** ログインユーザーが参加しているサーバー一覧を取得する（guilds スコープが必要）。 */
+export async function fetchUserGuilds(accessToken: string): Promise<DiscordGuild[]> {
+  const res = await fetch(`${DISCORD_API_BASE}/users/@me/guilds`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Discord サーバー一覧の取得に失敗しました (${res.status}): ${text}`);
+  }
+
+  return (await res.json()) as DiscordGuild[];
 }
